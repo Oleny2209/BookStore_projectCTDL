@@ -51,8 +51,9 @@ public class FileLoader {
     }
     
     public static void main(String[] args) throws IOException {
-        FileLoader loader = new FileLoader();
-        System.out.println(loader.loadBook());
+//        System.out.println(loadBook());
 //        System.out.println(loader.loadCustomer());
+        BookManager bookManager = new BookManager(loadBook());
+        System.out.println(bookManager.getListBook());
     }
 }

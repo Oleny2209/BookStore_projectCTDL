@@ -30,6 +30,7 @@ public class MainFrame extends JFrame {
         
         
         setVisible(true);
+        
     }
     
     public JMenuBar createMenuBar() {
@@ -72,7 +73,6 @@ public class MainFrame extends JFrame {
     }
     
     public static void main(String[] args) throws IOException {
-        
         new MainFrame();
     }
 }

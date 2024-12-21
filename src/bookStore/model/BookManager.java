@@ -12,7 +12,7 @@ public class BookManager {
     private Map<Book, Integer> listBook;
     
     public BookManager(Map<Book, Integer> listBook) {
-        this.listBook = new HashMap<>();
+        this.listBook = listBook;
     }
     
     //Add books to the list
@@ -20,7 +20,7 @@ public class BookManager {
     //if the book is there then add it
     public void addBook(Book book, int n) {
         
-        if ( listBook == null || !(listBook.containsKey(book))) {
+        if (!(listBook.containsKey(book))) {
             listBook.put(book, n);
         } else {
             listBook.put(book,listBook.getOrDefault(book,0)+n);

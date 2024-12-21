@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 
 public class BookManagerPanel extends JPanel {
     JTextField textIDBook, textTitle, textAuthor, textPulish, textPrice, textYearPub, textQuantity;//TextF dung cho thong tin sach
@@ -21,7 +22,7 @@ public class BookManagerPanel extends JPanel {
     DefaultTableModel modelStored;
     JScrollPane scrollPane;
     JTable tableStored;
-    
+    BookManager bookManager = SupportEvent.getBookManager();
     public BookManagerPanel() throws IOException {
         setLayout(new BorderLayout());
         
@@ -34,6 +35,7 @@ public class BookManagerPanel extends JPanel {
         boundFindInfoPanel.add(findPanel, BorderLayout.EAST);
         add(boundFindInfoPanel, BorderLayout.NORTH);
         add(storedPanel, BorderLayout.CENTER);
+        
     }
     
     public class InfoPanel extends JPanel {
@@ -172,25 +174,21 @@ public class BookManagerPanel extends JPanel {
                     if (btnAddStored.equals(user)) {
                         System.out.println("Add");
                         // check sach hop le hay khong
-                        String idBook = textIDBook.getText().trim();
-                        String title = textTitle.getText().trim();
-                        String type = (String) comboType.getSelectedItem();
-                        String author = textAuthor.getText().trim();
-                        String publish = textPulish.getText().trim();
-                        int yearRelease = Integer.parseInt(textYearPub.getText().trim());
-                        int quantity = Integer.parseInt(textQuantity.getText().trim());
-                        double price = Double.parseDouble(textPrice.getText().trim());
-                        if (idBook.isEmpty() || title.isEmpty() || type.isEmpty() || author.isEmpty()
-                                || publish.isEmpty()) {
-                            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sách!", "Lỗi",
-                                    JOptionPane.ERROR_MESSAGE);
-                        } else {
+                        try{
+                            String idBook = textIDBook.getText().trim();
+                            String title = textTitle.getText().trim();
+                            String type = (String) comboType.getSelectedItem();
+                            String author = textAuthor.getText().trim();
+                            String publish = textPulish.getText().trim();
+                            int yearRelease = Integer.parseInt(textYearPub.getText().trim());
+                            int quantity = Integer.parseInt(textQuantity.getText().trim());
+                            double price = Double.parseDouble(textPrice.getText().trim());
                             Book newBook = new Book(idBook, title, price, type, author, publish, quantity, yearRelease);
                             BookManager bookManager = new BookManager(FileLoader.loadBook());
                             
                             modelStored.addRow(new Object[] { modelStored.getRowCount() + 1, // STT
-                                newBook.getIdBook(), newBook.getTitle(), newBook.getType(), newBook.getAuthor(),
-                                newBook.getPublish(), newBook.getYearRelease(), newBook.getPrice(), quantity });// Xóa trắng các trường nhập liệu sau khi thêm
+                                    newBook.getIdBook(), newBook.getTitle(), newBook.getType(), newBook.getAuthor(),
+                                    newBook.getPublish(), newBook.getYearRelease(), newBook.getPrice(), quantity });// Xóa trắng các trường nhập liệu sau khi thêm
                             textIDBook.setText("");
                             textTitle.setText("");
                             comboType.setSelectedIndex(0);
@@ -199,15 +197,33 @@ public class BookManagerPanel extends JPanel {
                             textYearPub.setText("");
                             textQuantity.setText("");
                             textPrice.setText("");
-                            JOptionPane.showMessageDialog(null, "Thêm sách thành công!", "Thông báo",
-                                JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Thêm sách thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                        }catch (Exception exception){
+                            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sách!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                         }
-                        
+                        updateTable();
                     }
                 }
                 
             });
             
+        }
+        public void updateTable(){
+            while (modelStored.getRowCount() > 0) modelStored.removeRow(0);
+            for (Map.Entry<Book,Integer> entry : bookManager.getListBook().entrySet()){
+                String idBook = entry.getKey().getIdBook();
+                String title = entry.getKey().getTitle();
+                String type = entry.getKey().getType();
+                String author = entry.getKey().getAuthor();
+                String publish = entry.getKey().getPublish();
+                int yearRelease = entry.getKey().getYearRelease();
+                int quantity = entry.getValue();
+                double price = entry.getKey().getPrice();
+                
+                modelStored.addRow(new Object[]{modelStored.getRowCount() + 1, idBook,title,type,author,publish,yearRelease,price,quantity});
+            }
+            System.out.println("Complete Updated");
+            bookManager.getListBook().forEach((book, integer) -> System.out.println(book));
         }
     }
     
@@ -222,21 +238,6 @@ public class BookManagerPanel extends JPanel {
             tableStored = new JTable(modelStored);
             scrollPane = new JScrollPane(tableStored);
             add(scrollPane, BorderLayout.CENTER);
-        }
-    }
-    
-    public static void updateTable(DefaultTableModel model, BookManager bookManager){
-        for (Map.Entry<Book,Integer> book : bookManager.getListBook().entrySet()){
-            String idBook = book.getKey().getIdBook();
-            String title = book.getKey().getTitle();
-            String type = book.getKey().getType();
-            String author = book.getKey().getAuthor();
-            String publish = book.getKey().getPublish();
-            int yearRelease = book.getKey().getYearRelease();
-            int quantity = book.getValue();
-            double price = book.getKey().getPrice();
-            
-            model.addRow(new Object[]{model.getRowCount() + 1, idBook,title,type,author,publish,yearRelease,price,quantity});
         }
     }
 }
