@@ -38,10 +38,11 @@ public class CustomerManagerPanel extends JPanel {
         idInputPanel.add(textLargeId, BorderLayout.CENTER);
         JLabel customerName = new JLabel("Tên khách hàng:");
         textCustomerName = new JTextField();
-        JLabel customerBirth = new JLabel("Tài khoản khách hàng:");
+        JLabel customerBirth = new JLabel("Số điện thoại:");
         textCustomerBirth = new JTextField();
-        JLabel typeCustomer = new JLabel("Mật khẩu khách hàng:");
+        JLabel typeCustomer = new JLabel("Tổng tiền:");
         textTypeCustomer = new JTextField();
+        textTypeCustomer.setEditable(false);
         leftPanel.add(customerId);
         leftPanel.add(idInputPanel);
         leftPanel.add(customerName);
@@ -73,7 +74,7 @@ public class CustomerManagerPanel extends JPanel {
         // Chức năng làm việc chung với table phía dưới
         JPanel groupPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10, 10));
-        restartBtn = new JButton("Làm mới danh sách");
+        restartBtn = new JButton("Cập nhật danh sách");
         restartBtn.setPreferredSize(new Dimension(150,50));
         resetBtn = new JButton("Xoá danh sách");
         resetBtn.addActionListener(e -> {
@@ -107,7 +108,7 @@ public class CustomerManagerPanel extends JPanel {
             TitledBorder titledBorder = BorderFactory.createTitledBorder("Bảng thông tin khách hàng");
             titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 20));
             tablePanel.setBorder(titledBorder);
-            String[] columns = {"STT", "Mã Khách Hàng", "Tên Khách Hàng", "Ngày Sinh", "Loại", "Tài Khoản", "Mật Khẩu"};
+            String[] columns = {"STT", "Mã Khách Hàng", "Tên Khách Hàng", "Ngày Sinh", "Loại", "Số điện thoại", "Tổng tiền"};
             tableModel = new DefaultTableModel(columns, 0);
             table = new JTable(tableModel);
             table.getTableHeader().setReorderingAllowed(false);
