@@ -1,9 +1,15 @@
 package bookStore.view;
 
+import bookStore.model.*;
+import bookStore.util.FileLoader;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.*;
+import java.io.IOException;
+import java.util.Map;
 
 public class BookManagerPanel extends JPanel {
     JTextField textIDBook, textTitle, textAuthor, textPulish, textPrice, textYearPub, textQuantity;//TextF dung cho thong tin sach
@@ -16,7 +22,7 @@ public class BookManagerPanel extends JPanel {
     JScrollPane scrollPane;
     JTable tableStored;
     
-    public BookManagerPanel() {
+    public BookManagerPanel() throws IOException {
         setLayout(new BorderLayout());
         
         JPanel boundFindInfoPanel = new JPanel(new BorderLayout());
@@ -82,6 +88,7 @@ public class BookManagerPanel extends JPanel {
             
             //Panel tim kiem
             add(insertInfoPanel, BorderLayout.CENTER);
+            
         }
     }
     
@@ -144,7 +151,7 @@ public class BookManagerPanel extends JPanel {
     }
     
     public class ButtonMorePanel extends JPanel {
-        public ButtonMorePanel() {
+        public ButtonMorePanel(){
             setLayout(new FlowLayout(FlowLayout.CENTER));
             JPanel boundPanel = new JPanel(new GridLayout(1,3));
             btnAddStored = new JButton("Thêm Sách");
@@ -156,6 +163,51 @@ public class BookManagerPanel extends JPanel {
             boundPanel.add(btnRemoveStored);
             
             add(boundPanel);
+            
+            btnAddStored.addActionListener(new ActionListener() {
+                
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JButton user = (JButton) (e.getSource());
+                    if (btnAddStored.equals(user)) {
+                        System.out.println("Add");
+                        // check sach hop le hay khong
+                        String idBook = textIDBook.getText().trim();
+                        String title = textTitle.getText().trim();
+                        String type = (String) comboType.getSelectedItem();
+                        String author = textAuthor.getText().trim();
+                        String publish = textPulish.getText().trim();
+                        int yearRelease = Integer.parseInt(textYearPub.getText().trim());
+                        int quantity = Integer.parseInt(textQuantity.getText().trim());
+                        double price = Double.parseDouble(textPrice.getText().trim());
+                        if (idBook.isEmpty() || title.isEmpty() || type.isEmpty() || author.isEmpty()
+                                || publish.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sách!", "Lỗi",
+                                    JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            Book newBook = new Book(idBook, title, price, type, author, publish, quantity, yearRelease);
+                            BookManager bookManager = new BookManager(FileLoader.loadBook());
+                            
+                            modelStored.addRow(new Object[] { modelStored.getRowCount() + 1, // STT
+                                newBook.getIdBook(), newBook.getTitle(), newBook.getType(), newBook.getAuthor(),
+                                newBook.getPublish(), newBook.getYearRelease(), newBook.getPrice(), quantity });// Xóa trắng các trường nhập liệu sau khi thêm
+                            textIDBook.setText("");
+                            textTitle.setText("");
+                            comboType.setSelectedIndex(0);
+                            textAuthor.setText("");
+                            textPulish.setText("");
+                            textYearPub.setText("");
+                            textQuantity.setText("");
+                            textPrice.setText("");
+                            JOptionPane.showMessageDialog(null, "Thêm sách thành công!", "Thông báo",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        
+                    }
+                }
+                
+            });
+            
         }
     }
     
@@ -173,4 +225,18 @@ public class BookManagerPanel extends JPanel {
         }
     }
     
+    public static void updateTable(DefaultTableModel model, BookManager bookManager){
+        for (Map.Entry<Book,Integer> book : bookManager.getListBook().entrySet()){
+            String idBook = book.getKey().getIdBook();
+            String title = book.getKey().getTitle();
+            String type = book.getKey().getType();
+            String author = book.getKey().getAuthor();
+            String publish = book.getKey().getPublish();
+            int yearRelease = book.getKey().getYearRelease();
+            int quantity = book.getValue();
+            double price = book.getKey().getPrice();
+            
+            model.addRow(new Object[]{model.getRowCount() + 1, idBook,title,type,author,publish,yearRelease,price,quantity});
+        }
+    }
 }

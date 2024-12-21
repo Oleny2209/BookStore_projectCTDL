@@ -1,10 +1,11 @@
 package bookStore.view;
 
 import bookStore.model.BookManager;
+import bookStore.model.CustomerManager;
+import bookStore.model.OrderManager;
 import bookStore.util.FileLoader;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 
@@ -14,7 +15,8 @@ public class MainFrame extends JFrame {
     JMenuItem mniExit,mniUpdate, mniBookManager, mniMainMenu;
     JPanel mainPanel;
     ActionListener actionMenu;
-    public MainFrame(){
+    static BookManager bookManager = new BookManager(FileLoader.loadBook());
+    public MainFrame() throws IOException {
         setTitle("Book Store Manager");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1080, 720);
@@ -70,7 +72,7 @@ public class MainFrame extends JFrame {
     }
     
     public static void main(String[] args) throws IOException {
+        
         new MainFrame();
-        BookManager bookManager = new BookManager(FileLoader.loadBook());
     }
 }

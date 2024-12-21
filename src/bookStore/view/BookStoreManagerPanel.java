@@ -1,17 +1,20 @@
 package bookStore.view;
 
+import bookStore.model.BookManager;
+import bookStore.model.CustomerManager;
 import bookStore.model.OrderManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookStoreManagerPanel extends JPanel {
     CardLayout card;
     JPanel mainPanel, bookPanel, mainMenuPanel,orderPanel,customerPanel;
-    public BookStoreManagerPanel(){
+    public BookStoreManagerPanel() throws IOException {
+        
         setLayout(new BorderLayout());
         
         card = new CardLayout();

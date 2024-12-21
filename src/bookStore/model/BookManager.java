@@ -5,6 +5,7 @@ import bookStore.util.FileLoader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public class BookManager {
@@ -41,4 +42,7 @@ public class BookManager {
         return null;
     }
     
+    public Map<Book, Integer> getListBook(){
+        return this.listBook;
+    }
 }
