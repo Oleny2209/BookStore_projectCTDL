@@ -1,5 +1,7 @@
 package view;
 
+import model.IModel;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -13,7 +15,7 @@ public class CustomerManagerPanel extends JPanel {
     JTable table;
     JScrollPane scrollPane;
 
-    CustomerManagerPanel(){
+    CustomerManagerPanel(IModel model){
         setLayout(new BorderLayout());
 
         add(ButtonManagerPanel(), BorderLayout.NORTH);

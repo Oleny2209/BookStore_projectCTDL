@@ -20,15 +20,13 @@ public class BookManagerPanel extends JPanel {
     DefaultTableModel modelStored;
     JScrollPane scrollPane;
     JTable tableStored;
-    BookManager bookManager = SupportEvent.getBookManager();
-    
-    public BookManagerPanel() throws IOException {
+    public BookManagerPanel(IModel model) throws IOException {
         setLayout(new BorderLayout());
         
         JPanel boundFindInfoPanel = new JPanel(new BorderLayout());
         JPanel infoPanel = new InfoPanel();
-        JPanel findPanel = new FindPanel();
-        JPanel storedPanel = new StoredPanel();
+        JPanel findPanel = new FindPanel(model);
+        JPanel storedPanel = new StoredPanel(model);
         
         boundFindInfoPanel.add(infoPanel, BorderLayout.CENTER);
         boundFindInfoPanel.add(findPanel, BorderLayout.EAST);
@@ -94,7 +92,7 @@ public class BookManagerPanel extends JPanel {
     }
     
     public class FindPanel extends JPanel {
-        public FindPanel() {
+        public FindPanel(IModel model) {
             setLayout(new BorderLayout());
             JPanel boundFindPanel = new JPanel(new BorderLayout());
             TitledBorder titledBorder = new TitledBorder("Tìm Kiếm Sách");
@@ -144,7 +142,7 @@ public class BookManagerPanel extends JPanel {
             boundFindPanel.add(buttonFindPanel, BorderLayout.CENTER);
             boundFindPanel.add(insertPanel, BorderLayout.NORTH);
             
-            JPanel buttonMorePanel = new ButtonMorePanel();
+            JPanel buttonMorePanel = new ButtonMorePanel(model);
             
             add(boundFindPanel, BorderLayout.NORTH);
             add(buttonMorePanel, BorderLayout.CENTER);
@@ -152,7 +150,7 @@ public class BookManagerPanel extends JPanel {
     }
     
     public class ButtonMorePanel extends JPanel {
-        public ButtonMorePanel() {
+        public ButtonMorePanel(IModel model) {
             setLayout(new FlowLayout(FlowLayout.CENTER));
             JPanel boundPanel = new JPanel(new GridLayout(1, 3));
             btnAddStored = new JButton("Thêm Sách");
@@ -179,7 +177,9 @@ public class BookManagerPanel extends JPanel {
                         int quantity = Integer.parseInt(textQuantity.getText().trim());
                         double price = Double.parseDouble(textPrice.getText().trim());
                         Book newBook = new Book(idBook, title, price, type, author, publish, yearRelease);
-                        bookManager.addBook(newBook, quantity);
+                        //goi phuong thuc tu Model.java
+                        //Tao phuong thuc tren IModel.java
+                        model.createBook(newBook, quantity);
                         
                         // Xóa trắng các trường nhập liệu sau khi thêm
                         textIDBook.setText("");
@@ -194,10 +194,10 @@ public class BookManagerPanel extends JPanel {
                     } catch (Exception exception) {
                         JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sách!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     }
-                    updateTable();
+                    updateTable(model);
                 }
             });
-            btnRefreshStored.addActionListener(e -> updateTable());
+            btnRefreshStored.addActionListener(e -> updateTable(model));
             btnRemoveStored.addActionListener(e -> {
                 if (e.getSource().equals(btnRemoveStored)) {
                     
@@ -205,38 +205,20 @@ public class BookManagerPanel extends JPanel {
                         int index = tableStored.getSelectedRow();
                         JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
                         String key = modelStored.getValueAt(index, 1).toString();
-                        bookManager.removeBook(key);
+                        model.removeBook(key);
                         
                     } catch (Exception exception) {
                         JOptionPane.showMessageDialog(null, "Hãy chọn hàng cần xóa",
                                 "Thông báo", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                updateTable();
+                updateTable(model);
             });
-        }
-        
-        //Cap nhat bang
-        public void updateTable() {
-            while (modelStored.getRowCount() > 0) modelStored.removeRow(0);
-            for (Map.Entry<Book, Integer> entry : bookManager.getListBook().entrySet()) {
-                String idBook = entry.getKey().getIdBook();
-                String title = entry.getKey().getTitle();
-                String type = entry.getKey().getType();
-                String author = entry.getKey().getAuthor();
-                String publish = entry.getKey().getPublish();
-                int yearRelease = entry.getKey().getYearRelease();
-                int quantity = entry.getValue();
-                double price = entry.getKey().getPrice();
-                
-                modelStored.addRow(new Object[]{modelStored.getRowCount() + 1, idBook, title, type, author, publish, yearRelease, price, quantity});
-            }
-            System.out.println("Complete Updated");
         }
     }
     
     public class StoredPanel extends JPanel {
-        public StoredPanel() {
+        public StoredPanel(IModel model) {
             setLayout(new BorderLayout());
             TitledBorder titledBorder = new TitledBorder("Danh Sách Sách Trong Kho");
             titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 15));
@@ -248,6 +230,25 @@ public class BookManagerPanel extends JPanel {
             tableStored.getTableHeader().setReorderingAllowed(false);
             scrollPane = new JScrollPane(tableStored);
             add(scrollPane, BorderLayout.CENTER);
+            updateTable(model);
+            
         }
+    }
+    
+    public void updateTable(IModel model) {
+        while (modelStored.getRowCount() > 0) modelStored.removeRow(0);
+        for (Map.Entry<Book, Integer> entry : model.getMainSystem().getBookManager().getListBook().entrySet()) {
+            String idBook = entry.getKey().getIdBook();
+            String title = entry.getKey().getTitle();
+            String type = entry.getKey().getType();
+            String author = entry.getKey().getAuthor();
+            String publish = entry.getKey().getPublish();
+            int yearRelease = entry.getKey().getYearRelease();
+            int quantity = entry.getValue();
+            double price = entry.getKey().getPrice();
+            
+            modelStored.addRow(new Object[]{modelStored.getRowCount() + 1, idBook, title, type, author, publish, yearRelease, price, quantity});
+        }
+        System.out.println("Complete Updated");
     }
 }
