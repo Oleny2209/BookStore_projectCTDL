@@ -1,8 +1,8 @@
 package view;
 
-import model.Customer;
-import model.CustomerManager;
 import model.IModel;
+import model.MainSystem;
+import model.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -10,7 +10,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Set;
 
 public class CustomerManagerPanel extends JPanel {
     JButton addBtn, deleteBtn;
@@ -19,19 +18,16 @@ public class CustomerManagerPanel extends JPanel {
     DefaultTableModel tableModel;
     JTable table;
     JScrollPane scrollPane;
-    CustomerManager customerManager;
-    Set<Customer> listCustomerPanel;
-    Customer customer;
 
-    CustomerManagerPanel(IModel model){
+    public CustomerManagerPanel(IModel model){
         setLayout(new BorderLayout());
 
-        add(ButtonManagerPanel(), BorderLayout.NORTH);
-        add(moreButtonPlease(), BorderLayout.CENTER);
-        add(ListCustomerPanel(), BorderLayout.SOUTH);
+        add(ButtonManagerPanel(model), BorderLayout.NORTH);
+        add(moreButtonPlease(model), BorderLayout.CENTER);
+        add(ListCustomerPanel(model), BorderLayout.SOUTH);
     }
 
-    JPanel ButtonManagerPanel() {
+    public JPanel ButtonManagerPanel(IModel model) {
         JPanel informationPanel = new JPanel(new BorderLayout());
         TitledBorder titledBorder = BorderFactory.createTitledBorder("Nhập thông tin khách hàng");
         titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 20));
@@ -69,14 +65,14 @@ public class CustomerManagerPanel extends JPanel {
         addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                customerManager.addCustomer(customer);
+                model.addCustomer(null);
             }
         });
         deleteBtn = new JButton("Xóa Khách Hàng");
         deleteBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                customerManager.removeCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
+                model.removeCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
             }
         });
         rightPanel.add(addBtn);
@@ -93,7 +89,7 @@ public class CustomerManagerPanel extends JPanel {
         return JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn thực hiện hành động trên?", "Xác nhận", JOptionPane.YES_NO_OPTION);
     };
 
-    JPanel moreButtonPlease(){
+    public JPanel moreButtonPlease(IModel model){
         // Chức năng làm việc chung với table phía dưới
         JPanel groupPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10, 10));
@@ -102,14 +98,14 @@ public class CustomerManagerPanel extends JPanel {
         restartBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                customerManager.updateListCustomer(listCustomerPanel);
+                model.updateListCustomer(null);
             }
         });
         resetBtn = new JButton("Xoá danh sách");
         resetBtn.addActionListener(e -> {
             int option = showConfirmDialog();
             if(option == JOptionPane.YES_OPTION) {
-                customerManager.resetListCustomer();
+                model.resetListCustomer();
             }
         });
         resetBtn.setPreferredSize(new Dimension(150,50));
@@ -118,7 +114,7 @@ public class CustomerManagerPanel extends JPanel {
         checkBtn.addActionListener(e -> {
             int option = showConfirmDialog();
             if(option == JOptionPane.YES_OPTION) {
-                customerManager.confirmUpdateCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
+                model.confirmUpdateCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
             }
         });
         findBtn = new JButton("Tìm kiếm");
@@ -126,7 +122,7 @@ public class CustomerManagerPanel extends JPanel {
         findBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                customerManager.findCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
+                model.findCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
             }
         });
         buttonPanel.add(checkBtn);
@@ -137,7 +133,7 @@ public class CustomerManagerPanel extends JPanel {
         return groupPanel;
     }
 
-    JPanel ListCustomerPanel(){
+    public JPanel ListCustomerPanel(IModel model){
             // Table khách hàng
             JPanel tablePanel = new JPanel(new BorderLayout());
             TitledBorder titledBorder = BorderFactory.createTitledBorder("Bảng thông tin khách hàng");
