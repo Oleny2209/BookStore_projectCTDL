@@ -13,7 +13,7 @@ public class BookManager {
     //Add books to the list
     //if the book is not there then add it to the list
     //if the book is there then add it
-    public void addBook(Book book, int n) 
+    public void addBook(Book book, int n) {
         if (!(listBook.containsKey(book))) {
 
             listBook.put(book, n);
