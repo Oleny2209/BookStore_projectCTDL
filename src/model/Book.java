@@ -1,4 +1,4 @@
-package bookStore.model;
+package model;
 
 public class Book {
     private String idBook;
@@ -7,17 +7,15 @@ public class Book {
     private String type;
     private String author;
     private String publish;
-    private int numPage;
     private int yearRelease;
     
-    public Book(String idBook, String title, double price, String type, String author, String publish, int numPage, int yearRelease) {
+    public Book(String idBook, String title, double price, String type, String author, String publish, int yearRelease) {
         this.idBook = idBook;
         this.title = title;
         this.price = price;
         this.type = type;
         this.author = author;
         this.publish = publish;
-        this.numPage = numPage;
         this.yearRelease = yearRelease;
     }
     //GET & SET method
@@ -60,14 +58,6 @@ public class Book {
     public void setPublish(String publish) {
         this.publish = publish;
     }
-
-    public int getNumPage() {
-        return numPage;
-    }
-    
-    public void setNumPage(int numPage) {
-        this.numPage = numPage;
-    }
     
     public int getYearRelease() {
         return yearRelease;
@@ -93,7 +83,6 @@ public class Book {
                 ", price=" + price +
                 ", author='" + author + '\'' +
                 ", pulish='" + publish + '\'' +
-                ", numPage=" + numPage +
                 ", yearRelease=" + yearRelease +
                 '}';
     }
@@ -109,7 +98,6 @@ public class Book {
                     this.price == that.price &&
                     this.author.equals(that.author) &&
                     this.publish.equals(that.publish) &&
-                    this.numPage == that.numPage &&
                     this.yearRelease == that.yearRelease;
         }
     }

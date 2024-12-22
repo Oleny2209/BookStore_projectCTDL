@@ -1,9 +1,8 @@
-package bookStore.util;
+package util;
 
-import bookStore.model.*;
+import model.*;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -11,7 +10,7 @@ import java.util.*;
 public class FileLoader {
     public static Map<Book, Integer> loadBook() {
         Book book = null;
-        Map<Book, Integer> result = new HashMap<>();
+        Map<Book, Integer> result = new TreeMap<>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
         String file = "src/data/listbook.txt";
         BufferedReader br = null;
         try {
@@ -23,7 +22,7 @@ public class FileLoader {
             while ((line = br.readLine()) != null) {
                 String[] str = line.split("\\|");
                 String idBook = null;
-                book = new Book(str[0].trim(), str[1].trim(), Double.parseDouble(str[2].trim()), str[7].trim(), str[3].trim(), str[4].trim(), Integer.parseInt(str[5].trim()), Integer.parseInt(str[6].trim()));
+                book = new Book(str[0].trim(), str[1].trim(), Double.parseDouble(str[2].trim()), str[7].trim(), str[3].trim(), str[4].trim(), Integer.parseInt(str[6].trim()));
                 result.put(book, Integer.parseInt(str[8].trim()));
             }
             br.close();
@@ -51,8 +50,9 @@ public class FileLoader {
     }
     
     public static void main(String[] args) throws IOException {
-        FileLoader loader = new FileLoader();
-        System.out.println(loader.loadBook());
+//        System.out.println(loadBook());
 //        System.out.println(loader.loadCustomer());
+        BookManager bookManager = new BookManager(loadBook());
+        System.out.println(bookManager.getListBook());
     }
 }

@@ -1,18 +1,12 @@
-package bookStore.model;
+package model;
 
-import bookStore.util.FileLoader;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BookManager {
     private Map<Book, Integer> listBook;
     
     public BookManager(Map<Book, Integer> listBook) {
-        this.listBook = new HashMap<>();
+        this.listBook = listBook;
     }
     
     //Add books to the list
@@ -20,7 +14,7 @@ public class BookManager {
     //if the book is there then add it
     public void addBook(Book book, int n) {
         
-        if ( listBook == null || !(listBook.containsKey(book))) {
+        if (!(listBook.containsKey(book))) {
             listBook.put(book, n);
         } else {
             listBook.put(book,listBook.getOrDefault(book,0)+n);
@@ -42,7 +36,18 @@ public class BookManager {
         return null;
     }
     
+    public Book findBook(String idb){
+        for (Book book: listBook.keySet()){
+            if (book.getIdBook().equals(idb))return book;
+        }
+        return null;
+    }
+    
     public Map<Book, Integer> getListBook(){
         return this.listBook;
+    }
+    
+    public void removeBook(String valueAt){
+        listBook.remove(findBook(valueAt));
     }
 }
