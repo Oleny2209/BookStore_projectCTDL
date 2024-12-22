@@ -1,4 +1,6 @@
-package bookStore.view;
+package view;
+
+import model.IModel;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -13,7 +15,8 @@ public class CustomerManagerPanel extends JPanel {
     JTable table;
     JScrollPane scrollPane;
 
-    CustomerManagerPanel(){
+
+    CustomerManagerPanel(IModel model){
         setLayout(new BorderLayout());
 
         add(ButtonManagerPanel(), BorderLayout.NORTH);
@@ -43,6 +46,7 @@ public class CustomerManagerPanel extends JPanel {
         JLabel typeCustomer = new JLabel("Tổng tiền:");
         textTypeCustomer = new JTextField();
         textTypeCustomer.setEditable(false);
+
         leftPanel.add(customerId);
         leftPanel.add(idInputPanel);
         leftPanel.add(customerName);
@@ -108,6 +112,7 @@ public class CustomerManagerPanel extends JPanel {
             TitledBorder titledBorder = BorderFactory.createTitledBorder("Bảng thông tin khách hàng");
             titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 20));
             tablePanel.setBorder(titledBorder);
+      
             String[] columns = {"STT", "Mã Khách Hàng", "Tên Khách Hàng", "Ngày Sinh", "Loại", "Số điện thoại", "Tổng tiền"};
             tableModel = new DefaultTableModel(columns, 0);
             table = new JTable(tableModel);

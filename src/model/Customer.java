@@ -1,6 +1,7 @@
-package bookStore.model;
+package model;
 
 import java.util.HashSet;
+
 import java.util.List;
 
 public class Customer {
@@ -52,6 +53,7 @@ public class Customer {
         this.orderByAcc = orderByAcc;
     }
 
+
     @Override
     public boolean equals(Object obj){
         if (obj == null || obj.getClass().equals(this.getClass())){
@@ -62,6 +64,7 @@ public class Customer {
                     this.name.equals(that.name) &&
                     this.phone == that.phone &&
                     new HashSet<>(this.orderByAcc).containsAll(that.orderByAcc);
+
         }
     }
     

@@ -1,4 +1,5 @@
-package bookStore.model;
+package model;
+
 
 public class OrderBook {
     private Book book;

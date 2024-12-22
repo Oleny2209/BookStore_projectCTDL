@@ -1,9 +1,9 @@
-package bookStore.view;
 
-import bookStore.model.BookManager;
-import bookStore.model.CustomerManager;
-import bookStore.model.OrderManager;
-import bookStore.util.FileLoader;
+package view;
+
+
+import model.*;
+import util.*;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -11,11 +11,12 @@ import java.io.IOException;
 
 public class MainFrame extends JFrame {
     JMenuBar menuBar;
-    JMenu menuFile,menuManager;
-    JMenuItem mniExit,mniUpdate, mniBookManager, mniMainMenu;
+    JMenu menuFile, menuManager;
+    JMenuItem mniExit, mniUpdate, mniBookManager, mniMainMenu;
     JPanel mainPanel;
     ActionListener actionMenu;
-    static BookManager bookManager = new BookManager(FileLoader.loadBook());
+    IModel model = new Model(MainSystem.getInstance());
+    
     public MainFrame() throws IOException {
         setTitle("Book Store Manager");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,8 +25,8 @@ public class MainFrame extends JFrame {
         setResizable(false);
         
         setJMenuBar(createMenuBar());
-        
-        mainPanel = new BookStoreManagerPanel();
+
+        mainPanel = new BookStoreManagerPanel(model);
         add(mainPanel);
         
         
@@ -33,11 +34,11 @@ public class MainFrame extends JFrame {
     }
     
     public JMenuBar createMenuBar() {
-        actionMenu = new ActionListener(){
+        actionMenu = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String user = e.getActionCommand();
-                ((BookStoreManagerPanel)mainPanel).showLayout(user);
+                ((BookStoreManagerPanel) mainPanel).showLayout(user);
             }
         };
         
@@ -66,13 +67,12 @@ public class MainFrame extends JFrame {
         menuManager.add(mniBookManager);
         
         menuBar.add(menuFile, JMenuBar.getDefaultLocale());
-        menuBar.add(menuManager,JMenuBar.getDefaultLocale());
+        menuBar.add(menuManager, JMenuBar.getDefaultLocale());
         
         return menuBar;
     }
     
     public static void main(String[] args) throws IOException {
-        
         new MainFrame();
     }
 }

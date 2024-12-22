@@ -1,4 +1,5 @@
-package bookStore.model;
+package model;
+
 
 import java.util.ArrayList;
 import java.util.List;

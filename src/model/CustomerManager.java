@@ -1,4 +1,4 @@
-package bookStore.model;
+package model;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -64,4 +64,5 @@ public class CustomerManager {
             customer.setPhone(otherPhone);
         }
     }
+
 }

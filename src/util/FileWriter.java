@@ -1,4 +1,4 @@
-package bookStore.util;
+package util;
 
 public class FileWriter {
 }
