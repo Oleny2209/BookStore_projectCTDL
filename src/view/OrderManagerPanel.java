@@ -1,9 +1,8 @@
-package bookStore.view;
+package view;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 
 public class OrderManagerPanel extends JPanel {
@@ -146,6 +145,7 @@ public class OrderManagerPanel extends JPanel {
             model = new DefaultTableModel(columns,0);
             table = new JTable(model);
             table.getTableHeader().setReorderingAllowed(false);
+            table.setEnabled(false);
             scrollPane = new JScrollPane(table);
             
             tablePanel.add(scrollPane);

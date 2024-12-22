@@ -1,4 +1,4 @@
-package bookStore.view;
+package view;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -66,7 +66,7 @@ public class CustomerManagerPanel extends JPanel {
     }
 
     int showConfirmDialog() {
-        return JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn thực hiện hành động trên?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        return JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn thực hiện hành động trên? \n (Chỉ nên thực hiện khi tiệm phá sản)", "Xác nhận", JOptionPane.YES_NO_OPTION);
     };
 
     JPanel moreButtonPlease(){

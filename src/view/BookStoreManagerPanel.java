@@ -1,8 +1,4 @@
-package bookStore.view;
-
-import bookStore.model.BookManager;
-import bookStore.model.CustomerManager;
-import bookStore.model.OrderManager;
+package view;
 
 import javax.swing.*;
 import java.awt.*;

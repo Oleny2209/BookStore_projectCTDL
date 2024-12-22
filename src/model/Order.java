@@ -1,4 +1,4 @@
-package bookStore.model;
+package model;
 
 import java.time.LocalDate;
 import java.util.List;

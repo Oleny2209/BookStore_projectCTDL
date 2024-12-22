@@ -1,6 +1,6 @@
-package bookStore.view;
+package view;
 
-import bookStore.model.BookManager;
+import model.BookManager;
 
 public class SupportEvent {
     public static BookManager getBookManager(){

@@ -1,4 +1,4 @@
-package bookStore.model;
+package model;
 
 @FunctionalInterface
 public interface ManageBookStore {
