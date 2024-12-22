@@ -18,16 +18,10 @@ public class CustomerManager {
         return listCustomer.add(cus);
     }
     // Tìm kiếm
-    List<Customer> checkByIdCustomer(String supposeId) {
+    Set<Customer> findCustomer(String supposeId, String supposeName, int supposePhone) {
         return listCustomer.stream()
-                .filter(customer -> customer.getIdCustomer().equals(supposeId))
-                .collect(Collectors.toList());
-    }
-
-    List<Customer> checkByNameCustomer(String supposeName) {
-        return listCustomer.stream()
-                .filter(customer -> customer.getName().equals(supposeName))
-                .collect(Collectors.toList());
+                .filter(customer -> customer.getIdCustomer().equals(supposeId) || customer.getName().equals(supposeName) || customer.getPhone() == supposePhone)
+                .collect(Collectors.toSet());
     }
 
     // Thêm khách hàng
