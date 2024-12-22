@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Set;
+
 public class Model implements IModel{
     private MainSystem mainSystem;
     public Model(MainSystem mainSystem){
@@ -18,5 +20,35 @@ public class Model implements IModel{
     @Override
     public void removeBook(String id) {
         this.mainSystem.removeBook(id);
+    }
+
+    @Override
+    public void addCustomer(Customer supposeCustomer){
+        this.mainSystem.addCustomer(supposeCustomer);
+    }
+
+    @Override
+    public void removeCustomer(String supposeIdCustomer, String supposeName, String supposePhone) {
+        this.mainSystem.removeCustomer(supposeIdCustomer, supposeName, supposePhone);
+    }
+
+    @Override
+    public void resetListCustomer(){
+        this.mainSystem.resetListCustomer();
+    }
+
+    @Override
+    public void updateListCustomer(Set<Customer> newData){
+        this.mainSystem.updateListCustomer(newData);
+    }
+
+    @Override
+    public void confirmUpdateCustomer(String otherId, String otherName, String otherPhone){
+        this.mainSystem.confirmUpdateCustomer(otherId, otherName, otherPhone);
+    }
+
+    @Override
+    public void findCustomer(String supposeId, String supposeName, String supposePhone){
+        this.mainSystem.findCustomer(supposeId, supposeName, supposePhone);
     }
 }

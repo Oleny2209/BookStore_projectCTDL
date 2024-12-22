@@ -3,6 +3,8 @@ package model;
 
 import util.FileLoader;
 
+import java.util.Set;
+
 public class MainSystem {
     private static MainSystem instance;
     private BookManager bookManager;
@@ -39,5 +41,29 @@ public class MainSystem {
     
     public void removeBook(String id) {
         bookManager.removeBook(id);
+    }
+
+    public void findCustomer(String supposeId, String supposeName, String supposePhone){
+        customerManager.findCustomer(supposeId, supposeName, supposePhone);
+    }
+
+    public void addCustomer(Customer supposeCustomer){
+        customerManager.addCustomer(supposeCustomer);
+    }
+
+    public void removeCustomer(String supposeIdCustomer, String supposeName, String supposePhone) {
+        customerManager.removeCustomer(supposeIdCustomer, supposeName, supposePhone);
+    }
+
+    public void resetListCustomer(){
+        customerManager.resetListCustomer();
+    }
+
+    public void updateListCustomer(Set<Customer> newData){
+        customerManager.updateListCustomer(newData);
+    }
+
+    public void confirmUpdateCustomer(String otherId, String otherName, String otherPhone){
+        customerManager.confirmUpdateCustomer(otherId, otherName, otherPhone);
     }
 }
