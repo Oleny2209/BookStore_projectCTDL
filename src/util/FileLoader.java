@@ -2,6 +2,7 @@ package util;
 
 import model.*;
 
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class FileLoader {
         
         while ((line = br.readLine()) != null) {
             String[] str = line.split("\\|");
-            customer = new Customer(str[0].trim(), str[1].trim(), Integer.parseInt(str[2].trim()), new ArrayList<>());
+            customer = new Customer(str[0].trim(), str[1].trim(), str[2].trim(), new ArrayList<>());
             setCustomer.add(customer);
         }
         br.close();
@@ -50,9 +51,9 @@ public class FileLoader {
     }
     
     public static void main(String[] args) throws IOException {
-//        System.out.println(loadBook());
+        FileLoader loader = new FileLoader();
+        System.out.println(loader.loadBook());
 //        System.out.println(loader.loadCustomer());
-        BookManager bookManager = new BookManager(loadBook());
-        System.out.println(bookManager.getListBook());
+
     }
 }

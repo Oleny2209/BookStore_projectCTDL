@@ -1,5 +1,7 @@
 package view;
 
+import model.IModel;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
@@ -12,13 +14,13 @@ public class OrderManagerPanel extends JPanel {
     JTextField textIDB,textTitle,textAuthor, textPulish, textPrice, textYearPub;//textField cua Panel Thong tin sach trong hoa don
     JTextField textTotalPrice, textDiscount, textPriceAfterDiscount;
     //textField cua panel tinh tien
-    DefaultTableModel model;
+    DefaultTableModel modelOrder;
     JTable table;
     JScrollPane scrollPane;
-    public OrderManagerPanel(){
+    public OrderManagerPanel(IModel model){
         setLayout(new BorderLayout());
         JPanel orderInformationPanel = new OrderInformationPanel();
-        JPanel listInOrderPanel = new ListInOrderPanel();
+        JPanel listInOrderPanel = new ListInOrderPanel(model);
         
         add(listInOrderPanel,BorderLayout.CENTER);
         add(orderInformationPanel,BorderLayout.NORTH);
@@ -77,7 +79,7 @@ public class OrderManagerPanel extends JPanel {
     }
     
     public class ListInOrderPanel extends JPanel{
-        public ListInOrderPanel(){
+        public ListInOrderPanel(IModel model){
             setLayout(new BorderLayout());
             setBorder(BorderFactory.createMatteBorder(1,0,1,0,new Color(0,0,0)));
             
@@ -142,8 +144,8 @@ public class OrderManagerPanel extends JPanel {
             JPanel tablePanel = new JPanel();
             tablePanel.setLayout(new BorderLayout());
             String[]columns = {"STT","Mã Sách","Tên Sách","Tác Giả","Đơn Giá","Số Lượng","Thành Tiền"};
-            model = new DefaultTableModel(columns,0);
-            table = new JTable(model);
+            modelOrder = new DefaultTableModel(columns,0);
+            table = new JTable(modelOrder);
             table.getTableHeader().setReorderingAllowed(false);
             table.setEnabled(false);
             scrollPane = new JScrollPane(table);

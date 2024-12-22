@@ -1,4 +1,7 @@
+
 package view;
+
+import model.IModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +12,9 @@ import java.util.List;
 public class BookStoreManagerPanel extends JPanel {
     CardLayout card;
     JPanel mainPanel, bookPanel, mainMenuPanel,orderPanel,customerPanel;
-    public BookStoreManagerPanel() throws IOException {
+    
+    //them model vao constructor
+    public BookStoreManagerPanel(IModel model) throws IOException {
         
         setLayout(new BorderLayout());
         
@@ -17,9 +22,10 @@ public class BookStoreManagerPanel extends JPanel {
         
         mainPanel = new JPanel(card);
         mainMenuPanel = new MainMenuPanel();
-        bookPanel = new BookManagerPanel();
-        orderPanel = new OrderManagerPanel();
-        customerPanel = new CustomerManagerPanel();
+
+        bookPanel = new BookManagerPanel(model);
+        orderPanel = new OrderManagerPanel(model);
+        customerPanel = new CustomerManagerPanel(model);
         
         mainPanel.add("mainPanel",mainMenuPanel);
         mainPanel.add("bookPanel",bookPanel);

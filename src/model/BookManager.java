@@ -2,6 +2,7 @@ package model;
 
 import java.util.*;
 
+
 public class BookManager {
     private Map<Book, Integer> listBook;
     
@@ -13,8 +14,8 @@ public class BookManager {
     //if the book is not there then add it to the list
     //if the book is there then add it
     public void addBook(Book book, int n) {
-        
         if (!(listBook.containsKey(book))) {
+
             listBook.put(book, n);
         } else {
             listBook.put(book,listBook.getOrDefault(book,0)+n);
