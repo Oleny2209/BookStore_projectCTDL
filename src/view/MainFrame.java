@@ -1,3 +1,4 @@
+
 package view;
 
 
@@ -24,13 +25,12 @@ public class MainFrame extends JFrame {
         setResizable(false);
         
         setJMenuBar(createMenuBar());
-        
+
         mainPanel = new BookStoreManagerPanel(model);
         add(mainPanel);
         
         
         setVisible(true);
-        
     }
     
     public JMenuBar createMenuBar() {

@@ -1,3 +1,4 @@
+
 package view;
 
 import model.IModel;
@@ -21,6 +22,7 @@ public class BookStoreManagerPanel extends JPanel {
         
         mainPanel = new JPanel(card);
         mainMenuPanel = new MainMenuPanel();
+
         bookPanel = new BookManagerPanel(model);
         orderPanel = new OrderManagerPanel(model);
         customerPanel = new CustomerManagerPanel(model);

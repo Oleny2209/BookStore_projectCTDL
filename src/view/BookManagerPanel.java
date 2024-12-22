@@ -5,10 +5,11 @@ import model.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class BookManagerPanel extends JPanel {
     JTextField textIDBook, textTitle, textAuthor, textPulish, textPrice, textYearPub, textQuantity;//TextF dung cho thong tin sach
@@ -20,11 +21,13 @@ public class BookManagerPanel extends JPanel {
     DefaultTableModel modelStored;
     JScrollPane scrollPane;
     JTable tableStored;
+  
     public BookManagerPanel(IModel model) throws IOException {
         setLayout(new BorderLayout());
         
         JPanel boundFindInfoPanel = new JPanel(new BorderLayout());
         JPanel infoPanel = new InfoPanel();
+
         JPanel findPanel = new FindPanel(model);
         JPanel storedPanel = new StoredPanel(model);
         
@@ -32,7 +35,6 @@ public class BookManagerPanel extends JPanel {
         boundFindInfoPanel.add(findPanel, BorderLayout.EAST);
         add(boundFindInfoPanel, BorderLayout.NORTH);
         add(storedPanel, BorderLayout.CENTER);
-        
     }
     
     public class InfoPanel extends JPanel {
@@ -141,7 +143,7 @@ public class BookManagerPanel extends JPanel {
             
             boundFindPanel.add(buttonFindPanel, BorderLayout.CENTER);
             boundFindPanel.add(insertPanel, BorderLayout.NORTH);
-            
+
             JPanel buttonMorePanel = new ButtonMorePanel(model);
             
             add(boundFindPanel, BorderLayout.NORTH);
@@ -223,6 +225,7 @@ public class BookManagerPanel extends JPanel {
             TitledBorder titledBorder = new TitledBorder("Danh Sách Sách Trong Kho");
             titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 15));
             setBorder(titledBorder);
+
             String[] columns = {"STT", "Mã Sách", "Tên Sách", "Thể Loại", "Tác Giả", "Nhà Xuất Bản", "Năm Xuất Bản", "Đơn Giá", "Số Lượng"};
             modelStored = new DefaultTableModel(columns, 0);
             tableStored = new JTable(modelStored);
@@ -231,7 +234,6 @@ public class BookManagerPanel extends JPanel {
             scrollPane = new JScrollPane(tableStored);
             add(scrollPane, BorderLayout.CENTER);
             updateTable(model);
-            
         }
     }
     
