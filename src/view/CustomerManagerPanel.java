@@ -1,20 +1,27 @@
 package view;
 
+import model.Customer;
+import model.CustomerManager;
 import model.IModel;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Set;
 
 public class CustomerManagerPanel extends JPanel {
     JButton addBtn, deleteBtn;
-    JTextField textSmallId, textLargeId, textCustomerName, textCustomerBirth, textTypeCustomer;
+    JTextField textSmallId, textLargeId, textCustomerName, textCustomerPhone, textCustomerSum;
     JButton restartBtn, resetBtn, checkBtn, findBtn;
     DefaultTableModel tableModel;
     JTable table;
     JScrollPane scrollPane;
-
+    CustomerManager customerManager;
+    Set<Customer> listCustomerPanel;
+    Customer customer;
 
     CustomerManagerPanel(IModel model){
         setLayout(new BorderLayout());
@@ -42,24 +49,36 @@ public class CustomerManagerPanel extends JPanel {
         JLabel customerName = new JLabel("Tên khách hàng:");
         textCustomerName = new JTextField();
         JLabel customerBirth = new JLabel("Số điện thoại:");
-        textCustomerBirth = new JTextField();
+        textCustomerPhone = new JTextField();
         JLabel typeCustomer = new JLabel("Tổng tiền:");
-        textTypeCustomer = new JTextField();
-        textTypeCustomer.setEditable(false);
+        textCustomerSum = new JTextField();
+        textCustomerSum.setEditable(false);
 
         leftPanel.add(customerId);
         leftPanel.add(idInputPanel);
         leftPanel.add(customerName);
         leftPanel.add(textCustomerName);
         leftPanel.add(customerBirth);
-        leftPanel.add(textCustomerBirth);
+        leftPanel.add(textCustomerPhone);
         leftPanel.add(typeCustomer);
-        leftPanel.add(textTypeCustomer);
+        leftPanel.add(textCustomerSum);
 
         // Panel bên phải
         JPanel rightPanel = new JPanel(new GridLayout(2, 1, 10, 10)); // 2 hàng, 1 cột, khoảng cách 10px
         addBtn = new JButton("Thêm Khách Hàng");
+        addBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                customerManager.addCustomer(customer);
+            }
+        });
         deleteBtn = new JButton("Xóa Khách Hàng");
+        deleteBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                customerManager.removeCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
+            }
+        });
         rightPanel.add(addBtn);
         rightPanel.add(deleteBtn);
 
@@ -80,11 +99,17 @@ public class CustomerManagerPanel extends JPanel {
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 10, 10));
         restartBtn = new JButton("Cập nhật danh sách");
         restartBtn.setPreferredSize(new Dimension(150,50));
+        restartBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                customerManager.updateListCustomer(listCustomerPanel);
+            }
+        });
         resetBtn = new JButton("Xoá danh sách");
         resetBtn.addActionListener(e -> {
             int option = showConfirmDialog();
             if(option == JOptionPane.YES_OPTION) {
-                // Thực hiện hành động
+                customerManager.resetListCustomer();
             }
         });
         resetBtn.setPreferredSize(new Dimension(150,50));
@@ -93,11 +118,17 @@ public class CustomerManagerPanel extends JPanel {
         checkBtn.addActionListener(e -> {
             int option = showConfirmDialog();
             if(option == JOptionPane.YES_OPTION) {
-                // Thực hiện hành động
+                customerManager.confirmUpdateCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
             }
         });
         findBtn = new JButton("Tìm kiếm");
         findBtn.setPreferredSize(new Dimension(150,50));
+        findBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                customerManager.findCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
+            }
+        });
         buttonPanel.add(checkBtn);
         buttonPanel.add(findBtn);
         buttonPanel.add(restartBtn);

@@ -1,9 +1,7 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CustomerManager {
     private Set<Customer> listCustomer;
@@ -12,57 +10,52 @@ public class CustomerManager {
         this.listCustomer = new HashSet<>();
     }
 
-    public boolean addCustomer(Customer cus) {
-        return listCustomer.add(cus);
-    }
     // Tìm kiếm
-    Set<Customer> findCustomer(String supposeId, String supposeName, String supposePhone) {
+    public Customer findCustomer(String supposeId, String supposeName, String supposePhone) {
         return listCustomer.stream()
                 .filter(customer -> customer.getIdCustomer().equals(supposeId) || customer.getName().equals(supposeName) || customer.getPhone().equals(supposePhone))
-                .collect(Collectors.toSet());
+                .findFirst().orElse(null);
     }
 
     // Thêm khách hàng
-    boolean addCustomer(String supposeIdCustomer, String supposeName, String supposePhone) {
-        return listCustomer.add(new Customer(supposeIdCustomer, supposeName, supposePhone, new ArrayList<>()));
-    };
+    public void addCustomer(Customer supposeCustomer) {
+        listCustomer.add(supposeCustomer);
+    }
 
     // Xoá khách hàng
-    Set<Customer> removeCustomer(String supposeIdCustomer, String supposeName, int supposePhone) {
-        return listCustomer.stream()
-                .filter(customer -> !(customer.getIdCustomer().equals(supposeIdCustomer) || customer.getName().equals(supposeName) || customer.getPhone().equals(supposePhone)))
-                .collect(Collectors.toSet());
-    };
+    public void removeCustomer(String supposeIdCustomer, String supposeName, String supposePhone) {
+        listCustomer.removeIf(customer -> customer.getIdCustomer().equals(supposeIdCustomer) || customer.getName().equals(supposeName) || customer.getPhone().equals(supposePhone));
+    }
 
     // Xoá danh sách
-    void resetListCustomer(){
+    public void resetListCustomer(){
         listCustomer.clear();
     }
 
     // Cập nhật danh sách
-    Set<Customer> updateListCustomer(Set<Customer> newData){
+    public void updateListCustomer(Set<Customer> newData){
         listCustomer.clear();
         listCustomer.addAll(newData);
-        return listCustomer;
     }
 
     // Xác nhận thay đổi
-    void confirmUpdateCustomer(String otherName, String otherPhone){
-        Set<Customer> foundCustomers = findCustomer(null, null, null);
-        if(foundCustomers.isEmpty()){
+    public void confirmUpdateCustomer(String otherId, String otherName, String otherPhone){
+        Customer foundCustomers = findCustomer(null, null, null);
+        if(foundCustomers == null){
             System.out.println("Không hiển thị bất cứ ai");
-        }
-        // Lấy khách hàng đầu tiên trong tập kết quả
-        Customer customer = foundCustomers.iterator().next();
-
-        // Cập nhật thông tin
-        if (otherName != null && !otherName.trim().isEmpty()) {
-            customer.setName(otherName.trim());
-        }
-        // Kiểm tra xem nếu SĐT bắt đầu bằng 0 và nó có 10 index số (theo chuẩn VN)
-        if (otherPhone.startsWith("0") && otherPhone.length() == 10) {
-            customer.setPhone(otherPhone);
+        } else {
+            // Cập nhật tên khách
+            if (otherName != null && !otherName.trim().isEmpty()) {
+                foundCustomers.setName(otherName.trim());
+            }
+            // Cập nhật SĐT khách
+            if (otherPhone.startsWith("0") && otherPhone.length() == 10) {
+                foundCustomers.setPhone(otherPhone);
+            }
+            // Cập nhật ID khách
+            if (otherId != null && otherId.length() == 7){
+                foundCustomers.setIdCustomer(otherId);
+            }
         }
     }
-
 }
