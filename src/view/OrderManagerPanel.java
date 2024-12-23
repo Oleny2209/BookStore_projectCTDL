@@ -183,7 +183,6 @@ public class OrderManagerPanel extends JPanel {
             
             tablePanel.add(boundStatsPanel,BorderLayout.SOUTH);
             add(orderInfoPanel,BorderLayout.CENTER);
-            
         }
     }
 }

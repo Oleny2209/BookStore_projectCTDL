@@ -21,13 +21,13 @@ public class BookManagerPanel extends JPanel {
     DefaultTableModel modelStored;
     JScrollPane scrollPane;
     JTable tableStored;
-  
+    
     public BookManagerPanel(IModel model) throws IOException {
         setLayout(new BorderLayout());
         
         JPanel boundFindInfoPanel = new JPanel(new BorderLayout());
         JPanel infoPanel = new InfoPanel();
-
+        
         JPanel findPanel = new FindPanel(model);
         JPanel storedPanel = new StoredPanel(model);
         
@@ -139,15 +139,75 @@ public class BookManagerPanel extends JPanel {
             btnFind = new JButton("Tìm");
             btnFind.setBackground(new Color(255, 250, 250));
             btnFind.setFocusable(false);
+            btnFind.addActionListener(e -> {
+                if (e.getSource().equals(btnFind)) {
+                    
+                    
+                    BookManager category = new BookManager(model.getMainSystem().getBookManager());
+                    
+                    Map<Book, Integer> resultFind = new TreeMap<Book,Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
+                    if (!txFindIDBook.getText().trim().isEmpty()) {
+                        String idBook = txFindIDBook.getText().trim();
+                        resultFind.putAll(category.findBooksByID(idBook));
+                    } else {
+                        if (!txFindStartYearPub.getText().trim().isEmpty() && !txFindEndYearPub.getText().trim().isEmpty()) {
+                            resultFind = new TreeMap<Book,Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
+                            int start = Integer.parseInt(txFindStartYearPub.getText().trim());
+                            int end = Integer.parseInt(txFindEndYearPub.getText().trim());
+                            resultFind.putAll(category.findBookBetweenYear(start, end));
+                            category.setListBook(resultFind);
+                        }
+                        if (!txFindTitle.getText().trim().isEmpty()) {
+                            resultFind = new TreeMap<Book,Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
+                            String title = txFindTitle.getText().trim();
+                            resultFind.putAll(category.findBookByTitle(title));
+                            category.setListBook(resultFind);
+                        }
+                        if (!Objects.requireNonNull(comboFindType.getSelectedItem()).toString().isEmpty()) {
+                            resultFind = new TreeMap<Book,Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
+                            String typeBook = Objects.requireNonNull(comboFindType.getSelectedItem()).toString();
+                            resultFind.putAll(category.findBookByType(typeBook));
+                            category.setListBook(resultFind);
+                        }
+                        if (!txFindAuthor.getText().trim().isEmpty()) {
+                            resultFind = new TreeMap<Book,Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
+                            String author = txFindAuthor.getText().trim();
+                            resultFind.putAll(category.findBookByAuthor(author));
+                            category.setListBook(resultFind);
+                        }
+                        
+                    }
+                    updateTableFind(resultFind);
+                    
+                    
+                }
+            });
             buttonFindPanel.add(btnFind);
             
             boundFindPanel.add(buttonFindPanel, BorderLayout.CENTER);
             boundFindPanel.add(insertPanel, BorderLayout.NORTH);
-
+            
             JPanel buttonMorePanel = new ButtonMorePanel(model);
             
             add(boundFindPanel, BorderLayout.NORTH);
             add(buttonMorePanel, BorderLayout.CENTER);
+        }
+        
+        void updateTableFind(Map<Book, Integer> mapBook) {
+            while (modelStored.getRowCount() > 0) modelStored.removeRow(0);
+            for (Map.Entry<Book, Integer> entry : mapBook.entrySet()) {
+                String idBook = entry.getKey().getIdBook();
+                String title = entry.getKey().getTitle();
+                String type = entry.getKey().getType();
+                String author = entry.getKey().getAuthor();
+                String publish = entry.getKey().getPublish();
+                int yearRelease = entry.getKey().getYearRelease();
+                int quantity = entry.getValue();
+                double price = entry.getKey().getPrice();
+                
+                modelStored.addRow(new Object[]{modelStored.getRowCount() + 1, idBook, title, type, author, publish, yearRelease, price, quantity});
+            }
+            System.out.println("Complete Updated Find");
         }
     }
     
@@ -225,7 +285,7 @@ public class BookManagerPanel extends JPanel {
             TitledBorder titledBorder = new TitledBorder("Danh Sách Sách Trong Kho");
             titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 15));
             setBorder(titledBorder);
-
+            
             String[] columns = {"STT", "Mã Sách", "Tên Sách", "Thể Loại", "Tác Giả", "Nhà Xuất Bản", "Năm Xuất Bản", "Đơn Giá", "Số Lượng"};
             modelStored = new DefaultTableModel(columns, 0);
             tableStored = new JTable(modelStored);

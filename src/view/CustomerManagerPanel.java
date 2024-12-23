@@ -136,7 +136,8 @@ public class CustomerManagerPanel extends JPanel {
         groupPanel.add(buttonPanel);
         return groupPanel;
     }
-
+  
+  
     public JPanel ListCustomerPanel(IModel model) {
         // Table khách hàng
         JPanel tablePanel = new JPanel(new BorderLayout());
