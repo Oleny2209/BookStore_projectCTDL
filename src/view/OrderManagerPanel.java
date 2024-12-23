@@ -1,16 +1,27 @@
 package view;
 
+import com.sun.jdi.request.StepRequest;
+import model.Book;
 import model.IModel;
+import model.Order;
+import model.OrderBook;
+import util.AnalyzeDate;
+import util.TextPrompt;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderManagerPanel extends JPanel {
-    JButton btnCreateOrder,btnSearchOrder, buttonAddBook, buttonFind;
+    JButton btnCreateOrder,btnSearchOrder, buttonAddBook, buttonFind, buttonFindCustomer;
     JButton btnRemoveOrder, btnChangeOrder, btnTotal;
-    JTextField textIDOrder, textNameCus, textIDC, textDateOrder, textDelivery;//textField cua Panel thong tin hoa don
+    JTextField textIDOrder, textNameCus, textIDCustomer, textDateOrder, textDelivery;//textField cua Panel thong tin hoa don
     JTextField textIDB,textTitle,textAuthor, textPulish, textPrice, textYearPub;//textField cua Panel Thong tin sach trong hoa don
     JTextField textTotalPrice, textDiscount, textPriceAfterDiscount;
     //textField cua panel tinh tien
@@ -19,14 +30,14 @@ public class OrderManagerPanel extends JPanel {
     JScrollPane scrollPane;
     public OrderManagerPanel(IModel model){
         setLayout(new BorderLayout());
-        JPanel orderInformationPanel = new OrderInformationPanel();
+        JPanel orderInformationPanel = new OrderInformationPanel(model);
         JPanel listInOrderPanel = new ListInOrderPanel(model);
         
         add(listInOrderPanel,BorderLayout.CENTER);
         add(orderInformationPanel,BorderLayout.NORTH);
     }
     public class OrderInformationPanel extends JPanel{
-        public OrderInformationPanel(){
+        public OrderInformationPanel(IModel model){
             setLayout(new BorderLayout());
             setSize(new Dimension(400,300));
             TitledBorder titledBorder = new TitledBorder("Hóa Đơn Bán Hàng");
@@ -36,7 +47,9 @@ public class OrderManagerPanel extends JPanel {
             JPanel insertFormPanel = new JPanel(new GridLayout(3,4,5,5));
             
             JLabel idLabel = new JLabel("Mã Hóa Đơn:");
-            textIDOrder = new JTextField("");
+            textIDOrder = new JTextField("1");
+            textIDOrder.setEditable(false);
+            textIDOrder.setEnabled(false);
             insertFormPanel.add(idLabel);
             insertFormPanel.add(textIDOrder);
             insertFormPanel.add(new JPanel());
@@ -49,28 +62,52 @@ public class OrderManagerPanel extends JPanel {
             insertFormPanel.add(textNameCus);
             
             JLabel idCusLabel = new JLabel("Mã Khách Hàng: ");
-            textIDC = new JTextField("");
+            textIDCustomer = new JTextField("");
             insertFormPanel.add(idCusLabel);
-            insertFormPanel.add(textIDC);
+            insertFormPanel.add(textIDCustomer);
             
             JLabel orderDateLabel = new JLabel("Ngày đặt hàng:");
-            textDateOrder = new JTextField("");
+            textDateOrder = new JTextField(10);
+            TextPrompt tp1 = new TextPrompt("day-month-year", textDateOrder);
             insertFormPanel.add(orderDateLabel);insertFormPanel.add(textDateOrder);
             
             JLabel deliveryDateLabel = new JLabel("Ngày giao hàng: ");
             textDelivery = new JTextField("");
+            TextPrompt tp2 = new TextPrompt("day-month-year", textDelivery);
             insertFormPanel.add(deliveryDateLabel);insertFormPanel.add(textDelivery);
             
             setLayout(new BorderLayout());
             
             JPanel boundPanel = new JPanel(new FlowLayout());
             JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new GridLayout(1,2));
+            buttonPanel.setLayout(new GridLayout(1,3,5,5));
             btnCreateOrder = new JButton("Tạo Hóa đơn");
             btnSearchOrder = new JButton("Tìm Hóa Đơn");
+            buttonFindCustomer = new JButton("Tìm Khách Hàng");
+            
+            btnCreateOrder.addActionListener(e -> {
+                if (e.getSource().equals(btnCreateOrder)) {
+                    try {
+                        int idOrder = Integer.parseInt(textIDOrder.getText().trim());
+                        String nameCus = textNameCus.getText().trim();
+                        String idCustomer = textIDCustomer.getText().trim();
+                        LocalDate orderDate = AnalyzeDate.convertDayFomart(textDateOrder.getText().trim());
+                        LocalDate deliveryDate = AnalyzeDate.convertDayFomart(textDelivery.getText().trim());
+                        List<OrderBook>list = new ArrayList<>();
+                        list.add(new OrderBook(new Book("A","V",12,"A","A","A",12),12));
+                        Order newOrder = new Order(idOrder, orderDate, deliveryDate, model.findCustomer(idCustomer, nameCus, ""), list);
+                        model.addOrder(newOrder);
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin của hóa đơn",
+                                "Nhắc nhở", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                updateTable(model);
+            });
             
             buttonPanel.add(btnCreateOrder);
             buttonPanel.add(btnSearchOrder);
+            buttonPanel.add(buttonFindCustomer);
             
             boundPanel.add(buttonPanel);
             add(boundPanel,BorderLayout.SOUTH);
@@ -184,5 +221,16 @@ public class OrderManagerPanel extends JPanel {
             tablePanel.add(boundStatsPanel,BorderLayout.SOUTH);
             add(orderInfoPanel,BorderLayout.CENTER);
         }
+    }
+    public void updateTable(IModel model){
+        while (modelOrder.getRowCount() > 0) modelOrder.removeRow(0);
+        List<OrderBook> list = model.getMainSystem().getOrderManager().getAllOrders().stream().flatMap(order -> order.getListOrder().stream()).toList();
+        for (OrderBook orderBook : list){
+            String[]row = new String[]{modelOrder.getRowCount()+1 + "",
+                    orderBook.getBook().getIdBook(), orderBook.getBook().getType(), orderBook.getBook().getAuthor(),
+                    orderBook.getBook().getPrice() + "", orderBook.getQuantity() +"", orderBook.getPriceBook() +""};
+            modelOrder.addRow(row);
+        }
+        table.setModel(modelOrder);
     }
 }

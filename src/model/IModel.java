@@ -4,7 +4,9 @@ import java.util.Set;
 
 public interface IModel {
     void createBook(Book book,int quantity);
+    
     void removeBook(String id);
+    
     MainSystem getMainSystem();
 
     void addCustomer(Customer supposeCustomer);
@@ -17,5 +19,7 @@ public interface IModel {
 
     void confirmUpdateCustomer(String otherId, String otherName, String otherPhone);
 
-    void findCustomer(String supposeId, String supposeName, String supposePhone);
+    Customer findCustomer(String supposeId, String supposeName, String supposePhone);
+    
+    void addOrder(Order order);
 }
