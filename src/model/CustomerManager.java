@@ -14,7 +14,6 @@ public class CustomerManager {
     public Set<Customer> getListCustomer() {
         return listCustomer;
     }
-
     // Tìm kiếm
     public Customer findCustomer(String supposeId, String supposeName, String supposePhone) {
         return listCustomer.stream()
