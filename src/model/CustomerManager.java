@@ -17,8 +17,13 @@ public class CustomerManager {
     // Tìm kiếm
     public Customer findCustomer(String supposeId, String supposeName, String supposePhone) {
         return listCustomer.stream()
-                .filter(customer -> customer.getIdCustomer().equals(supposeId) || customer.getName().equals(supposeName) || customer.getPhone().equals(supposePhone))
-                .findFirst().orElse(null);
+                .filter(customer ->
+                                (customer.getIdCustomer().equals(supposeId)) ||
+                                (customer.getName().equals(supposeName)) ||
+                                (customer.getPhone().equals(supposePhone))
+                )
+                .findFirst()
+                .orElse(null);
     }
 
     // Thêm khách hàng
