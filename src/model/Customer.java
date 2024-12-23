@@ -8,10 +8,10 @@ public class Customer {
     private String phone;
     private String birth;
     private String type;
-    private String totalMoney;
+    private double totalMoney;
     private List<Order> orderByAcc;
     
-    public Customer(String idCustomer, String name, String birth, String type, String phone, String totalMoney) {
+    public Customer(String idCustomer, String name, String birth, String type, String phone, double totalMoney) {
         this.idCustomer = idCustomer;
         this.name = name;
         this.phone = phone;
@@ -60,11 +60,11 @@ public class Customer {
         this.type = type;
     }
     
-    public String getTotalMoney() {
+    public double getTotalMoney() {
         return totalMoney;
     }
     
-    public void setTotalMoney(String totalMoney) {
+    public void setTotalMoney(double totalMoney) {
         this.totalMoney = totalMoney;
     }
     

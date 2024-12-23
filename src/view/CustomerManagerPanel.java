@@ -98,7 +98,7 @@ public class CustomerManagerPanel extends JPanel {
         restartBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                model.updateListCustomer(null);
+                updateTable(model);
             }
         });
         resetBtn = new JButton("Xoá danh sách");
@@ -164,7 +164,7 @@ public class CustomerManagerPanel extends JPanel {
                 String birthCustomer = customer.getBirth();
                 String type = customer.getType();
                 String phoneCustomer = customer.getPhone();
-                String totalMoney = customer.getTotalMoney();
+                double totalMoney = customer.getTotalMoney();
 
                 tableModel.addRow(new Object[]{tableModel.getRowCount()+1,idCustomer, nameCustomer, birthCustomer, type, phoneCustomer, totalMoney});
             }

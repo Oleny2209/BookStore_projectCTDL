@@ -44,7 +44,7 @@ public class FileLoader {
             
             while ((line = br.readLine()) != null) {
                 String[] str = line.split("\\|");
-                customer = new Customer(str[1].trim(), str[2].trim(), str[3].trim(), str[4].trim(), str[5].trim(), str[6].trim());
+                customer = new Customer(str[1].trim(), str[2].trim(), str[3].trim(), str[4].trim(), str[5].trim(),Double.parseDouble(str[6].trim()));
                 setCustomer.add(customer);
             }
             br.close();

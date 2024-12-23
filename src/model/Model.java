@@ -56,4 +56,9 @@ public class Model implements IModel{
     public void addOrder(Order order) {
         this.mainSystem.getOrderManager().addOrder(order);
     }
+    
+    @Override
+    public void removeBookInOrder(String id, int idOrder) {
+        this.mainSystem.removeBookInOrder(id,idOrder);
+    }
 }

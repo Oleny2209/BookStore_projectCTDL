@@ -51,7 +51,7 @@ public class BookStoreManagerPanel extends JPanel {
         List<String> stringList = new ArrayList<>();
         stringList.add("Quản Lí Sách");
         stringList.add("Quản Lí Khách Hàng");
-        stringList.add("Quản Lí Hóa Đơn");
+        stringList.add("Hóa Đơn Bán Hàng");
         for (int i = 0; i < stringList.size();i++){
             btn = new JButton(stringList.get(i));
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));

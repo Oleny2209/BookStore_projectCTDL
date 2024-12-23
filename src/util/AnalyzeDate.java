@@ -17,7 +17,6 @@ public class AnalyzeDate {
             input[1] = arr[2]+arr[3];
             input[2] = arr[4]+arr[5]+arr[6]+arr[7];
         }
-        assert input != null;
         return LocalDate.parse(input[2] + "-" + input[1] + "-" + input[0]);
     }
 }
