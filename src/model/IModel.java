@@ -17,5 +17,5 @@ public interface IModel {
 
     void confirmUpdateCustomer(String otherId, String otherName, String otherPhone);
 
-    void findCustomer(String supposeId, String supposeName, String supposePhone);
+    Customer findCustomer(String supposeId, String supposeName, String supposePhone);
 }
