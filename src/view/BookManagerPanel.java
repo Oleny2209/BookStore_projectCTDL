@@ -14,7 +14,6 @@ import java.util.*;
 public class BookManagerPanel extends JPanel {
     JTextField textIDBook, textTitle, textAuthor, textPulish, textPrice, textYearPub, textQuantity;//TextF dung cho thong tin sach
     JTextField txFindIDBook, txFindTitle, txFindStartYearPub, txFindEndYearPub, txFindAuthor;//TF dung cho tim kiem
-    JTextField txDisplayStatus;
     JButton btnFind;
     JButton btnAddStored, btnRemoveStored, btnRefreshStored;
     JComboBox<String> comboType, comboFindType;
