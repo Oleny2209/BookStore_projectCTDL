@@ -8,19 +8,19 @@ public class Customer {
     private String idCustomer;
     private String name;
     private String phone;
+    private String birth;
+    private String type;
+    private String totalMoney;
     private List<Order>orderByAcc;
-    
-    public Customer(String idCustomer, String name, String phone, List<Order> orderByAcc) {
+
+    public Customer(String idCustomer, String name, String birth, String type, String phone, String totalMoney) {
         this.idCustomer = idCustomer;
         this.name = name;
         this.phone = phone;
-        this.orderByAcc = orderByAcc;
+        this.birth = birth;
+        this.type = type;
+        this.totalMoney = totalMoney;
     }
-    
-    public boolean checkIDCustomer(String id){
-        return id.equals(idCustomer);
-    }
-
     public String getIdCustomer() {
         return idCustomer;
     }
@@ -45,6 +45,30 @@ public class Customer {
         this.phone = phone;
     }
 
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(String totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
     public List<Order> getOrderByAcc() {
         return orderByAcc;
     }
@@ -53,27 +77,15 @@ public class Customer {
         this.orderByAcc = orderByAcc;
     }
 
-
-    @Override
-    public boolean equals(Object obj){
-        if (obj == null || obj.getClass().equals(this.getClass())){
-            return false;
-        }else {
-            Customer that = (Customer) obj;
-            return this.idCustomer.equals(that.idCustomer) &&
-                    this.name.equals(that.name) &&
-                    this.phone == that.phone &&
-                    new HashSet<>(this.orderByAcc).containsAll(that.orderByAcc);
-
-        }
-    }
-    
     @Override
     public String toString() {
         return "Customer{" +
                 "idCustomer='" + idCustomer + '\'' +
                 ", name='" + name + '\'' +
-                ", phone=" + phone +
+                ", phone='" + phone + '\'' +
+                ", birth='" + birth + '\'' +
+                ", type='" + type + '\'' +
+                ", totalMoney='" + totalMoney + '\'' +
                 ", orderByAcc=" + orderByAcc +
                 '}';
     }

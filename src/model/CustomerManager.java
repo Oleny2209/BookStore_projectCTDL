@@ -1,6 +1,7 @@
 package model;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class CustomerManager {
@@ -8,6 +9,10 @@ public class CustomerManager {
 
     public CustomerManager() {
         this.listCustomer = new HashSet<>();
+    }
+
+    public Set<Customer> getListCustomer() {
+        return listCustomer;
     }
 
     // Tìm kiếm
