@@ -13,7 +13,7 @@ public class MainSystem {
     public MainSystem(){
         bookManager = new BookManager(FileLoader.loadBook());
         orderManager = new OrderManager();
-        customerManager = new CustomerManager();
+        customerManager = new CustomerManager(FileLoader.loadCustomer());
     }
     
     public static MainSystem getInstance(){

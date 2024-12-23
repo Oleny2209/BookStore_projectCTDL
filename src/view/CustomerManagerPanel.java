@@ -132,21 +132,42 @@ public class CustomerManagerPanel extends JPanel {
         groupPanel.add(buttonPanel);
         return groupPanel;
     }
+  
+  
+    public JPanel ListCustomerPanel(IModel model) {
+        // Table khách hàng
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        TitledBorder titledBorder = BorderFactory.createTitledBorder("Bảng thông tin khách hàng");
+        titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 20));
+        tablePanel.setBorder(titledBorder);
 
-    public JPanel ListCustomerPanel(IModel model){
-            // Table khách hàng
-            JPanel tablePanel = new JPanel(new BorderLayout());
-            TitledBorder titledBorder = BorderFactory.createTitledBorder("Bảng thông tin khách hàng");
-            titledBorder.setTitleFont(new Font("Arial", Font.BOLD, 20));
-            tablePanel.setBorder(titledBorder);
-      
-            String[] columns = {"STT", "Mã Khách Hàng", "Tên Khách Hàng", "Ngày Sinh", "Loại", "Số điện thoại", "Tổng tiền"};
-            tableModel = new DefaultTableModel(columns, 0);
-            table = new JTable(tableModel);
-            table.getTableHeader().setReorderingAllowed(false);
-            scrollPane = new JScrollPane(table);
-            tablePanel.add(scrollPane);
+        String[] columns = {"STT", "Mã Khách Hàng", "Tên Khách Hàng", "Ngày Sinh", "Loại", "Số điện thoại", "Tổng tiền"};
+        tableModel = new DefaultTableModel(columns, 0);
+        table = new JTable(tableModel);
+        table.setEditingColumn(0);
+        table.getTableHeader().setReorderingAllowed(false);
+        scrollPane = new JScrollPane(table);
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
+        updateTable(model);
+        return tablePanel;
+    }
 
-            return tablePanel;
+    public void updateTable(IModel model) {
+        if (model.getMainSystem().getCustomerManager().getListCustomer() == null) {
+            System.out.println("Không trả ra dữ liệu đầu vào đúng cách");
+        } else {
+            while (tableModel.getRowCount() > 0) tableModel.removeRow(0);
+            int count = 1;
+            for (Customer customer : model.getMainSystem().getCustomerManager().getListCustomer()) {
+                String idCustomer = customer.getIdCustomer();
+                String nameCustomer = customer.getName();
+                String birthCustomer = customer.getBirth();
+                String type = customer.getType();
+                String phoneCustomer = customer.getPhone();
+                String totalMoney = customer.getTotalMoney();
+
+                tableModel.addRow(new Object[]{tableModel.getRowCount()+1,idCustomer, nameCustomer, birthCustomer, type, phoneCustomer, totalMoney});
+            }
         }
+    }
 }

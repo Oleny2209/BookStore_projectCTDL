@@ -1,15 +1,19 @@
 package model;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class CustomerManager {
     private Set<Customer> listCustomer;
 
-    public CustomerManager() {
-        this.listCustomer = new HashSet<>();
+    public CustomerManager(Set<Customer> listCustomer) {
+        this.listCustomer = listCustomer;
     }
 
+    public Set<Customer> getListCustomer() {
+        return listCustomer;
+    }
     // Tìm kiếm
     public Customer findCustomer(String supposeId, String supposeName, String supposePhone) {
         return listCustomer.stream()
