@@ -146,9 +146,8 @@ public class CustomerManagerPanel extends JPanel {
         table.setEditingColumn(0);
         table.getTableHeader().setReorderingAllowed(false);
         scrollPane = new JScrollPane(table);
-        add(scrollPane, BorderLayout.CENTER);
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
         updateTable(model);
-
         return tablePanel;
     }
 
@@ -159,7 +158,6 @@ public class CustomerManagerPanel extends JPanel {
             while (tableModel.getRowCount() > 0) tableModel.removeRow(0);
             int count = 1;
             for (Customer customer : model.getMainSystem().getCustomerManager().getListCustomer()) {
-                String stt = String.valueOf(count++);
                 String idCustomer = customer.getIdCustomer();
                 String nameCustomer = customer.getName();
                 String birthCustomer = customer.getBirth();
@@ -167,7 +165,7 @@ public class CustomerManagerPanel extends JPanel {
                 String phoneCustomer = customer.getPhone();
                 String totalMoney = customer.getTotalMoney();
 
-                tableModel.addRow(new Object[]{tableModel.getRowCount() + 1, stt, idCustomer, nameCustomer, birthCustomer, type, phoneCustomer, totalMoney});
+                tableModel.addRow(new Object[]{tableModel.getRowCount()+1,idCustomer, nameCustomer, birthCustomer, type, phoneCustomer, totalMoney});
             }
         }
     }

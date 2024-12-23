@@ -33,20 +33,24 @@ public class FileLoader {
         return result;
     }
     
-    public Set<Customer> loadCustomer() throws IOException {
+    public static Set<Customer> loadCustomer(){
         Customer customer = null;
         Set<Customer> setCustomer = new HashSet<>();
         String file = "src/data/customer_account.txt";
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        
-        String line = "";
-        
-        while ((line = br.readLine()) != null) {
-            String[] str = line.split("\\|");
-            customer = new Customer(str[0].trim(), str[1].trim(), str[2].trim(), str[3].trim(), str[4].trim(), str[5].trim());
-            setCustomer.add(customer);
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            
+            String line = "";
+            
+            while ((line = br.readLine()) != null) {
+                String[] str = line.split("\\|");
+                customer = new Customer(str[1].trim(), str[2].trim(), str[3].trim(), str[4].trim(), str[5].trim(), str[6].trim());
+                setCustomer.add(customer);
+            }
+            br.close();
+        }catch (Exception e){
+            throw new RuntimeException(e);
         }
-        br.close();
         return setCustomer;
     }
     

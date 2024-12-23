@@ -7,8 +7,8 @@ import java.util.Set;
 public class CustomerManager {
     private Set<Customer> listCustomer;
 
-    public CustomerManager() {
-        this.listCustomer = new HashSet<>();
+    public CustomerManager(Set<Customer> listCustomer) {
+        this.listCustomer = listCustomer;
     }
 
     public Set<Customer> getListCustomer() {
