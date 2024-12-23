@@ -167,7 +167,7 @@ public class CustomerManagerPanel extends JPanel {
                 String birthCustomer = customer.getBirth();
                 String type = customer.getType();
                 String phoneCustomer = customer.getPhone();
-                String totalMoney = customer.getTotalMoney();
+                double totalMoney = customer.getTotalMoney();
 
                 tableModel.addRow(new Object[]{tableModel.getRowCount()+1,idCustomer, nameCustomer, birthCustomer, type, phoneCustomer, totalMoney});
             }

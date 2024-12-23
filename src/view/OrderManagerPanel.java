@@ -1,10 +1,6 @@
 package view;
 
-import com.sun.jdi.request.StepRequest;
-import model.Book;
-import model.IModel;
-import model.Order;
-import model.OrderBook;
+import model.*;
 import util.AnalyzeDate;
 import util.TextPrompt;
 
@@ -16,18 +12,19 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class OrderManagerPanel extends JPanel {
     JButton btnCreateOrder,btnSearchOrder, buttonAddBook, buttonFind, buttonFindCustomer;
     JButton btnRemoveOrder, btnChangeOrder, btnTotal;
     JTextField textIDOrder, textNameCus, textIDCustomer, textDateOrder, textDelivery;//textField cua Panel thong tin hoa don
-    JTextField textIDB,textTitle,textAuthor, textPulish, textPrice, textYearPub;//textField cua Panel Thong tin sach trong hoa don
+    JTextField textIDB,textTitle,textAuthor, textPulish, textPrice, textYearPub, textType, textQuantity;//textField cua Panel Thong tin sach trong hoa don
     JTextField textTotalPrice, textDiscount, textPriceAfterDiscount;
+    static Order oderRealTime;
     //textField cua panel tinh tien
     DefaultTableModel modelOrder;
     JTable table;
     JScrollPane scrollPane;
+    int countOrder =1;
     public OrderManagerPanel(IModel model){
         setLayout(new BorderLayout());
         JPanel orderInformationPanel = new OrderInformationPanel(model);
@@ -44,17 +41,12 @@ public class OrderManagerPanel extends JPanel {
             titledBorder.setTitleFont(new Font("Arial",Font.BOLD,20));
             setBorder(titledBorder);
             
-            JPanel insertFormPanel = new JPanel(new GridLayout(3,4,5,5));
+            JPanel insertFormPanel = new JPanel(new GridLayout(2,6,5,5));
             
             JLabel idLabel = new JLabel("Mã Hóa Đơn:");
-            textIDOrder = new JTextField("1");
-            textIDOrder.setEditable(false);
-            textIDOrder.setEnabled(false);
+            textIDOrder = new JTextField(countOrder++ +"");
             insertFormPanel.add(idLabel);
             insertFormPanel.add(textIDOrder);
-            insertFormPanel.add(new JPanel());
-            insertFormPanel.add(new JPanel());
-            
             
             JLabel nameCusLabel = new JLabel("Tên Khách Hàng:");
             textNameCus = new JTextField("");
@@ -66,14 +58,16 @@ public class OrderManagerPanel extends JPanel {
             insertFormPanel.add(idCusLabel);
             insertFormPanel.add(textIDCustomer);
             
+            insertFormPanel.add(new JPanel());
+            insertFormPanel.add(new JPanel());
             JLabel orderDateLabel = new JLabel("Ngày đặt hàng:");
             textDateOrder = new JTextField(10);
-            TextPrompt tp1 = new TextPrompt("day-month-year", textDateOrder);
+            TextPrompt tp1 = new TextPrompt("dd / mm / yyyy", textDateOrder);
             insertFormPanel.add(orderDateLabel);insertFormPanel.add(textDateOrder);
             
             JLabel deliveryDateLabel = new JLabel("Ngày giao hàng: ");
-            textDelivery = new JTextField("");
-            TextPrompt tp2 = new TextPrompt("day-month-year", textDelivery);
+            textDelivery = new JTextField(8);
+            TextPrompt tp2 = new TextPrompt("dd / mm / yyyy", textDelivery);
             insertFormPanel.add(deliveryDateLabel);insertFormPanel.add(textDelivery);
             
             setLayout(new BorderLayout());
@@ -94,15 +88,32 @@ public class OrderManagerPanel extends JPanel {
                         LocalDate orderDate = AnalyzeDate.convertDayFomart(textDateOrder.getText().trim());
                         LocalDate deliveryDate = AnalyzeDate.convertDayFomart(textDelivery.getText().trim());
                         List<OrderBook>list = new ArrayList<>();
-                        list.add(new OrderBook(new Book("A","V",12,"A","A","A",12),12));
-                        Order newOrder = new Order(idOrder, orderDate, deliveryDate, model.findCustomer(idCustomer, nameCus, ""), list);
+                        model.findCustomer(idCustomer,nameCus,"").setTotalMoney(12*12);
+                        Order newOrder = new Order(idOrder, orderDate, deliveryDate, model.findCustomer(idCustomer, nameCus, ""), new ArrayList<>());
+                        oderRealTime = newOrder;
+                        System.out.println(model.getMainSystem().getOrderManager().getAllOrders().size());
                         model.addOrder(newOrder);
                     } catch (Exception exception) {
                         JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin của hóa đơn",
                                 "Nhắc nhở", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                updateTable(model);
+                updateTable(model,Integer.parseInt(textIDOrder.getText().trim()));
+            });
+            btnSearchOrder.addActionListener(e -> {
+                if (e.getSource().equals(btnSearchOrder)){
+                    updateTable(model,Integer.parseInt(textIDOrder.getText().trim()));
+                }
+            });
+            
+            buttonFindCustomer.addActionListener(e ->{
+                if (e.getSource().equals(buttonFindCustomer)){
+                    String nameCus = textNameCus.getText().trim();
+                    String idCustomer = textIDCustomer.getText().trim();
+                    Customer cus = model.findCustomer(idCustomer,"","");
+                    textNameCus.setText(cus.getName());
+                    textIDCustomer.setText(cus.getIdCustomer());
+                }
             });
             
             buttonPanel.add(btnCreateOrder);
@@ -123,28 +134,41 @@ public class OrderManagerPanel extends JPanel {
             //Panel the hien thong tin sach, tim sach, them sach
             JPanel boundInfoBookPanel = new JPanel(new BorderLayout());
             JPanel insertBookPanel = new JPanel();
-            insertBookPanel.setLayout(new GridLayout(6,2));
+            insertBookPanel.setLayout(new GridLayout(4,4,5,5));
             TitledBorder titledBorder = new TitledBorder("Thông Tin Sách");
             titledBorder.setTitleFont(new Font("Arial",Font.BOLD,15));
             insertBookPanel.setBorder(titledBorder);
             
             JLabel idBookLabel = new JLabel("ID Sách:",JLabel.LEFT);
-            textIDB = new JTextField("");
+            textIDB = new JTextField(SwingConstants.CENTER);
             
             JLabel titleLabel = new JLabel("Tên Sách");
-            textTitle = new JTextField("");
+            textTitle = new JTextField(SwingConstants.CENTER);
+            textTitle.setFont(new Font("Arial",Font.PLAIN,11));
+            textTitle.setEditable(false);
+            
+            JLabel typeLabel = new JLabel("Thể Loại");
+            textType = new JTextField(SwingConstants.CENTER);
+            textType.setEditable(false);
             
             JLabel authorLabel = new JLabel("Tác Giả:");
-            textAuthor = new JTextField("");
+            textAuthor = new JTextField(SwingConstants.CENTER);
+            textAuthor.setEditable(false);
             
             JLabel publishLabel = new JLabel("Nhà Xuất Bản");
-            textPulish = new JTextField("");
+            textPulish = new JTextField(SwingConstants.CENTER);
+            textPulish.setEditable(false);
             
             JLabel priceLabel = new JLabel("Giá Sách");
-            textPrice = new JTextField("");
+            textPrice = new JTextField(SwingConstants.CENTER);
+            textPrice.setEditable(false);
             
             JLabel yearPubLabel = new JLabel("Năm Xuất Bản: ");
-            textYearPub = new JTextField();
+            textYearPub = new JTextField(SwingConstants.CENTER);
+            textYearPub.setEditable(false);
+            
+            JLabel quantityLabel = new JLabel("Số lượng:");
+            textQuantity = new JTextField(SwingConstants.CENTER);
             
             JPanel buttonPanel = new JPanel(new FlowLayout());
             JPanel boundButtonPanel = new JPanel(new GridLayout(1,2,5,5));
@@ -152,6 +176,48 @@ public class OrderManagerPanel extends JPanel {
             
             buttonAddBook = new JButton("Thêm");
             buttonFind = new JButton("Tìm");
+            
+            buttonFind.addActionListener(e ->{
+                if (e.getSource().equals(buttonFind)){
+                    Book book = model.getMainSystem().getBookManager().findBookByID(textIDB.getText().trim());
+                    textTitle.setText(book.getTitle());
+                    textType.setText(book.getType());
+                    textAuthor.setText(book.getAuthor());
+                    textYearPub.setText(""+book.getYearRelease());
+                    textPrice.setText(""+book.getPrice());
+                    textPulish.setText(book.getPublish());
+                }
+            });
+            
+            buttonAddBook.addActionListener(e -> {
+                if (e.getSource().equals(buttonAddBook)){
+                    String idBook = textIDB.getText().trim();
+                    String title = textTitle.getText().trim();
+                    String type = textType.getText().trim();
+                    String author = textAuthor.getText().trim();
+                    String publish = textPulish.getText().trim();
+                    int yearRelease = Integer.parseInt(textYearPub.getText().trim());
+                    int quantity = Integer.parseInt(textQuantity.getText().trim());
+                    double price = Double.parseDouble(textPrice.getText().trim());
+                    
+                    Book newBook = new Book(idBook, title, price, type, author, publish, yearRelease);
+                    oderRealTime.getListOrder().add(new OrderBook(newBook,quantity));
+                    
+                    textIDB.setText("");
+                    textTitle.setText("");
+                    textType.setText("");
+                    textAuthor.setText("");
+                    textPulish.setText("");
+                    textYearPub.setText("");
+                    textQuantity.setText("");
+                    textPrice.setText("");
+                    updateTable(model,Integer.parseInt(textIDOrder.getText().trim()));
+                    
+                    double totalPrice = model.getMainSystem().getOrderManager().calculateTotalPrice(Integer.parseInt(textIDOrder.getText().trim()));
+                    textTotalPrice.setText(totalPrice+"");
+                }
+            });
+            
             boundButtonPanel.add(buttonAddBook);
             boundButtonPanel.add(buttonFind);
             
@@ -159,19 +225,24 @@ public class OrderManagerPanel extends JPanel {
             insertBookPanel.add(textIDB);
             insertBookPanel.add(titleLabel);
             insertBookPanel.add(textTitle);
+            insertBookPanel.add(typeLabel);
+            insertBookPanel.add(textType);
             insertBookPanel.add(authorLabel);
             insertBookPanel.add(textAuthor);
             insertBookPanel.add(publishLabel);
             insertBookPanel.add(textPulish);
-            insertBookPanel.add(priceLabel);
-            insertBookPanel.add(textPrice);
             insertBookPanel.add(yearPubLabel);
             insertBookPanel.add(textYearPub);
+            insertBookPanel.add(priceLabel);
+            insertBookPanel.add(textPrice);
+            insertBookPanel.add(quantityLabel);
+            insertBookPanel.add(textQuantity);
             
             boundInfoBookPanel.add(insertBookPanel,BorderLayout.NORTH);
             boundInfoBookPanel.add(buttonPanel,BorderLayout.CENTER);
-            add(boundInfoBookPanel,BorderLayout.WEST);
+            add(boundInfoBookPanel,BorderLayout.NORTH);
             
+            //Table area
             JPanel orderInfoPanel = new JPanel(new BorderLayout());
             TitledBorder titledBorder1 = new TitledBorder("Hóa Đơn");
             titledBorder1.setTitleFont(new Font("Arial",Font.BOLD,15));
@@ -184,7 +255,6 @@ public class OrderManagerPanel extends JPanel {
             modelOrder = new DefaultTableModel(columns,0);
             table = new JTable(modelOrder);
             table.getTableHeader().setReorderingAllowed(false);
-            table.setEnabled(false);
             scrollPane = new JScrollPane(table);
             
             tablePanel.add(scrollPane);
@@ -213,6 +283,30 @@ public class OrderManagerPanel extends JPanel {
             btnChangeOrder = new JButton("Sửa");
             btnTotal = new JButton("Thanh Toán");
             
+            btnRemoveOrder.addActionListener(e -> {
+                if (e.getSource().equals(btnRemoveOrder)){
+                    int index = table.getSelectedRow();
+                    String idbook = modelOrder.getValueAt(index, 1).toString().trim();
+                    int idOrder = Integer.parseInt(textIDOrder.getText().trim());
+                    model.removeBookInOrder(idbook,idOrder);
+                }
+                updateTable(model,Integer.parseInt(textIDOrder.getText().trim()));
+                double totalPrice = model.getMainSystem().getOrderManager().calculateTotalPrice(Integer.parseInt(textIDOrder.getText().trim()));
+                textTotalPrice.setText(totalPrice+"");
+            });
+            
+            btnTotal.addActionListener(e ->{
+                if (e.getSource().equals(btnTotal)){
+                    double discount = Double.parseDouble(textDiscount.getText().trim());
+                    double totalPrice = model.getMainSystem().getOrderManager().calculatePriceAfterDiscount(Integer.parseInt(textIDOrder.getText().trim()),discount);
+                    textPriceAfterDiscount.setText(totalPrice+"");
+                    String nameCus = textNameCus.getText().trim();
+                    String idCustomer = textIDCustomer.getText().trim();
+                    Customer cus = model.findCustomer(idCustomer,idCustomer,"");
+                    cus.setTotalMoney(totalPrice);
+                }
+            });
+            
             statusButtonPanel.add(btnRemoveOrder);
             statusButtonPanel.add(btnChangeOrder);
             statusButtonPanel.add(btnTotal);
@@ -222,9 +316,9 @@ public class OrderManagerPanel extends JPanel {
             add(orderInfoPanel,BorderLayout.CENTER);
         }
     }
-    public void updateTable(IModel model){
+    public void updateTable(IModel model, int idOrder){
         while (modelOrder.getRowCount() > 0) modelOrder.removeRow(0);
-        List<OrderBook> list = model.getMainSystem().getOrderManager().getAllOrders().stream().flatMap(order -> order.getListOrder().stream()).toList();
+        List<OrderBook> list = model.getMainSystem().getOrderManager().findOrderById(idOrder).getListOrder();
         for (OrderBook orderBook : list){
             String[]row = new String[]{modelOrder.getRowCount()+1 + "",
                     orderBook.getBook().getIdBook(), orderBook.getBook().getType(), orderBook.getBook().getAuthor(),

@@ -22,4 +22,6 @@ public interface IModel {
     Customer findCustomer(String supposeId, String supposeName, String supposePhone);
     
     void addOrder(Order order);
+    
+    void removeBookInOrder(String idBook, int idOrder);
 }

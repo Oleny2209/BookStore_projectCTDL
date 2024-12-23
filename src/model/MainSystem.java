@@ -66,4 +66,8 @@ public class MainSystem {
     public void confirmUpdateCustomer(String otherId, String otherName, String otherPhone){
         customerManager.confirmUpdateCustomer(otherId, otherName, otherPhone);
     }
+    
+    public void removeBookInOrder(String idbook, int idOrder) {
+        orderManager.removeOrderBook(idbook,idOrder);
+    }
 }

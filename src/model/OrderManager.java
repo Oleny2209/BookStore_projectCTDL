@@ -87,4 +87,8 @@ public class OrderManager {
             allOrders.add(order);
         }
     }
+    
+    public void removeOrderBook(String idBook, int idOrder) {
+        findOrderById(idOrder).removeBookByID(idBook);
+    }
 }

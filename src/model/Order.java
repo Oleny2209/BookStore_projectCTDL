@@ -3,6 +3,7 @@ package model;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class Order {
     private int idOrder;
@@ -43,13 +44,18 @@ public class Order {
         }
     }
     
+    public void removeBookByID(String idBook){
+        for (OrderBook orderBook : listOrder) {
+           if (orderBook.getBook().getIdBook().equals(idBook)){
+               listOrder.remove(orderBook);
+               break;
+           }
+        }
+    }
+    
     //Tao calculateTotalPrice de tinh tong tien hoa don
     public double calculateTotalPrice() {
-        double totalPrice = 0;
-        for (OrderBook orderBook : listOrder) {
-            totalPrice += orderBook.getBook().getPrice() * orderBook.getQuantity();
-        }
-        return totalPrice;
+        return listOrder.stream().mapToDouble(OrderBook::getPriceBook).sum();
     }
     
     //Tao calculatePriceAfterDiscount
@@ -95,5 +101,17 @@ public class Order {
     
     public double totalPrice(){
         return listOrder.stream().mapToDouble(OrderBook::getPriceBook).sum();
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof Order order)) return false;
+        return idOrder == order.idOrder && Objects.equals(orderDate, order.orderDate) && Objects.equals(deliveryDate, order.deliveryDate) && Objects.equals(customer, order.customer) && Objects.equals(listOrder, order.listOrder);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(idOrder, orderDate, deliveryDate, customer, listOrder);
     }
 }
