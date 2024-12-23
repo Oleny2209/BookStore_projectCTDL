@@ -77,4 +77,8 @@ public class Customer {
                 ", orderByAcc=" + orderByAcc +
                 '}';
     }
+    
+    public void totalBill(double updateBill) {
+    
+    }
 }
