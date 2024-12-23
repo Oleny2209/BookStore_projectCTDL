@@ -66,6 +66,7 @@ public class CustomerManagerPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.addCustomer(null);
+                updateTable(model);
             }
         });
         deleteBtn = new JButton("Xóa Khách Hàng");
@@ -73,6 +74,7 @@ public class CustomerManagerPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.removeCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
+                updateTable(model);
             }
         });
         rightPanel.add(addBtn);
@@ -98,7 +100,7 @@ public class CustomerManagerPanel extends JPanel {
         restartBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                model.updateListCustomer(null);
+                updateTable(model);
             }
         });
         resetBtn = new JButton("Xoá danh sách");
@@ -106,6 +108,7 @@ public class CustomerManagerPanel extends JPanel {
             int option = showConfirmDialog();
             if(option == JOptionPane.YES_OPTION) {
                 model.resetListCustomer();
+                updateTable(model);
             }
         });
         resetBtn.setPreferredSize(new Dimension(150,50));
@@ -115,6 +118,7 @@ public class CustomerManagerPanel extends JPanel {
             int option = showConfirmDialog();
             if(option == JOptionPane.YES_OPTION) {
                 model.confirmUpdateCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
+                updateTable(model);
             }
         });
         findBtn = new JButton("Tìm kiếm");
@@ -156,7 +160,6 @@ public class CustomerManagerPanel extends JPanel {
             System.out.println("Không trả ra dữ liệu đầu vào đúng cách");
         } else {
             while (tableModel.getRowCount() > 0) tableModel.removeRow(0);
-            int count = 1;
             for (Customer customer : model.getMainSystem().getCustomerManager().getListCustomer()) {
                 String idCustomer = customer.getIdCustomer();
                 String nameCustomer = customer.getName();

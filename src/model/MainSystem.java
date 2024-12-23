@@ -43,8 +43,8 @@ public class MainSystem {
         bookManager.removeBook(id);
     }
 
-    public void findCustomer(String supposeId, String supposeName, String supposePhone){
-        customerManager.findCustomer(supposeId, supposeName, supposePhone);
+    public Customer findCustomer(String supposeId, String supposeName, String supposePhone){
+        return customerManager.findCustomer(supposeId, supposeName, supposePhone);
     }
 
     public void addCustomer(Customer supposeCustomer){

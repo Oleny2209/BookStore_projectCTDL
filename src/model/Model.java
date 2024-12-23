@@ -48,7 +48,7 @@ public class Model implements IModel{
     }
 
     @Override
-    public void findCustomer(String supposeId, String supposeName, String supposePhone){
-        this.mainSystem.findCustomer(supposeId, supposeName, supposePhone);
+    public Customer findCustomer(String supposeId, String supposeName, String supposePhone){
+        return this.mainSystem.findCustomer(supposeId, supposeName, supposePhone);
     }
 }
