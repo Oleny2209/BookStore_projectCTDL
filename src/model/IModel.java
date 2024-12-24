@@ -1,4 +1,4 @@
-package modelTMP;
+package model;
 
 import java.util.Set;
 

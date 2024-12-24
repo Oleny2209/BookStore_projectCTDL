@@ -1,6 +1,6 @@
 package view;
 
-import modelTMP.*;
+import model.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

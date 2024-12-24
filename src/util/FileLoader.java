@@ -1,6 +1,6 @@
 package util;
 
-import modelTMP.*;
+import model.*;
 
 
 import java.io.BufferedReader;

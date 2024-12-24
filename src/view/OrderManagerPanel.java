@@ -1,6 +1,6 @@
 package view;
 
-import modelTMP.*;
+import model.*;
 import util.AnalyzeDate;
 import util.TextPrompt;
 

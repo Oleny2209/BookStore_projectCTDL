@@ -1,7 +1,7 @@
 
 package view;
 
-import modelTMP.IModel;
+import model.IModel;
 
 import javax.swing.*;
 import java.awt.*;

@@ -2,7 +2,7 @@
 package view;
 
 
-import modelTMP.*;
+import model.*;
 
 import javax.swing.*;
 import java.awt.event.*;
