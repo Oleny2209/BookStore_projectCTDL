@@ -161,11 +161,27 @@ public class CustomerManagerPanel extends JPanel {
         findBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Customer customer = model.findCustomer(textLargeId.getText(), textCustomerName.getText(), textCustomerPhone.getText());
-                textCustomerName.setText(customer.getName());
-                textBirthday.setText(AnalyzeDate.dateToString(customer.getBirth()));
-                textCustomerSum.setText(customer.getTotalMoney() + "");
-                textCustomerPhone.setText(customer.getPhone());
+                String largeId = textLargeId.getText().trim();
+                boolean found = false;
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    String idInTable = tableModel.getValueAt(i, 1).toString();
+                    if (idInTable.equals(largeId)) {
+                        found = true;
+                        textSmallId.setText(String.valueOf(i + 1));
+                        Customer customer = model.findCustomer(idInTable, "", "");
+                        if (customer != null) {
+                            textCustomerName.setText(customer.getName());
+                            textBirthday.setText(AnalyzeDate.dateToString(customer.getBirth()));
+                            textCustomerSum.setText(String.valueOf(customer.getTotalMoney()));
+                            textCustomerPhone.setText(customer.getPhone());
+                        }
+                        break;
+                    }
+                }
+                if (!found) {
+                    JOptionPane.showMessageDialog(null, "Không tìm thấy khách hàng với mã này!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                    textSmallId.setText("-1");
+                }
             }
         });
         buttonPanel.add(checkBtn);
