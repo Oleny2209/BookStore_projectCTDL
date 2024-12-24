@@ -15,7 +15,7 @@ import java.util.List;
 
 public class OrderManagerPanel extends JPanel {
     JButton btnCreateOrder,btnSearchOrder, buttonAddBook, buttonFind, buttonFindCustomer;
-    JButton btnRemoveOrder, btnChangeOrder, btnTotal;
+    JButton btnRemoveOrder, btnTotal;
     JTextField textIDOrder, textNameCus, textIDCustomer, textDateOrder, textDelivery;//textField cua Panel thong tin hoa don
     JTextField textIDB,textTitle,textAuthor, textPulish, textPrice, textYearPub, textType, textQuantity;//textField cua Panel Thong tin sach trong hoa don
     JTextField textTotalPrice, textDiscount, textPriceAfterDiscount;
@@ -276,14 +276,14 @@ public class OrderManagerPanel extends JPanel {
             //panel thong ke tien
             JPanel boundStatsPanel = new JPanel(new BorderLayout());
             
-            JPanel statsPanel = new JPanel(new GridLayout(1,6));
-            JLabel labelTotal = new JLabel("Tổng Thành Tiền");
+            JPanel statsPanel = new JPanel(new GridLayout(1,6,10,5));
+            JLabel labelTotal = new JLabel("Tổng Thành Tiền",JLabel.RIGHT);
             textTotalPrice = new JTextField();
             
-            JLabel discountLabel = new JLabel("Giảm Giá");
+            JLabel discountLabel = new JLabel("Giảm Giá",JLabel.RIGHT);
             textDiscount = new JTextField();
             
-            JLabel totalPriceLabel = new JLabel("Giá sau khi giảm");
+            JLabel totalPriceLabel = new JLabel("Giá sau khi giảm",JLabel.RIGHT);
             textPriceAfterDiscount = new JTextField();
             
             statsPanel.add(labelTotal);statsPanel.add(textTotalPrice);
