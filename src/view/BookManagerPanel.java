@@ -1,13 +1,12 @@
 package view;
 
-import model.*;
+import modelTMP.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.Map;
 import java.util.*;
 
@@ -22,7 +21,7 @@ public class BookManagerPanel extends JPanel {
     JScrollPane scrollPane;
     JTable tableStored;
     
-    public BookManagerPanel(IModel model) throws IOException {
+    public BookManagerPanel(IModel model) {
         setLayout(new BorderLayout());
         
         JPanel boundFindInfoPanel = new JPanel(new BorderLayout());
@@ -291,6 +290,10 @@ public class BookManagerPanel extends JPanel {
             tableStored = new JTable(modelStored);
             tableStored.setEditingColumn(0);
             tableStored.getTableHeader().setReorderingAllowed(false);
+            tableStored.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tableStored.getColumnModel().getColumn(1).setPreferredWidth(60);
+            tableStored.getColumnModel().getColumn(2).setPreferredWidth(250);
+            tableStored.getColumnModel().getColumn(4).setPreferredWidth(150);
             scrollPane = new JScrollPane(tableStored);
             add(scrollPane, BorderLayout.CENTER);
             updateTable(model);

@@ -1,17 +1,18 @@
-package model;
+package modelTMP;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Customer {
     private String idCustomer;
     private String name;
     private String phone;
-    private String birth;
+    private LocalDate birth;
     private String type;
     private double totalMoney;
     private List<Order> orderByAcc;
     
-    public Customer(String idCustomer, String name, String birth, String type, String phone, double totalMoney) {
+    public Customer(String idCustomer, String name, LocalDate birth, String type, String phone, double totalMoney) {
         this.idCustomer = idCustomer;
         this.name = name;
         this.phone = phone;
@@ -44,11 +45,11 @@ public class Customer {
         this.phone = phone;
     }
     
-    public String getBirth() {
+    public LocalDate getBirth() {
         return birth;
     }
     
-    public void setBirth(String birth) {
+    public void setBirth(LocalDate birth) {
         this.birth = birth;
     }
     

@@ -1,4 +1,4 @@
-package model;
+package modelTMP;
 
 import java.util.Set;
 
@@ -46,7 +46,12 @@ public class Model implements IModel{
     public void confirmUpdateCustomer(String otherId, String otherName, String otherPhone){
         this.mainSystem.confirmUpdateCustomer(otherId, otherName, otherPhone);
     }
-
+    
+    @Override
+    public void confirmUpdateCustomer(CustomerManager modelTMP) {
+        this.mainSystem.setCustomerManager(modelTMP);
+    }
+    
     @Override
     public Customer findCustomer(String supposeId, String supposeName, String supposePhone){
         return this.mainSystem.findCustomer(supposeId, supposeName, supposePhone);
@@ -61,4 +66,5 @@ public class Model implements IModel{
     public void removeBookInOrder(String id, int idOrder) {
         this.mainSystem.removeBookInOrder(id,idOrder);
     }
+    
 }

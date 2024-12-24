@@ -1,6 +1,6 @@
 package view;
 
-import model.*;
+import modelTMP.*;
 import util.AnalyzeDate;
 import util.TextPrompt;
 
@@ -93,6 +93,8 @@ public class OrderManagerPanel extends JPanel {
                         oderRealTime = newOrder;
                         System.out.println(model.getMainSystem().getOrderManager().getAllOrders().size());
                         model.addOrder(newOrder);
+                        JOptionPane.showMessageDialog(null, "Đã tạo thành công hóa đơn với ID:" + idOrder,
+                                "Thông Báo", JOptionPane.ERROR_MESSAGE);
                     } catch (Exception exception) {
                         JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin của hóa đơn",
                                 "Nhắc nhở", JOptionPane.ERROR_MESSAGE);
@@ -200,21 +202,32 @@ public class OrderManagerPanel extends JPanel {
                     int quantity = Integer.parseInt(textQuantity.getText().trim());
                     double price = Double.parseDouble(textPrice.getText().trim());
                     
-                    Book newBook = new Book(idBook, title, price, type, author, publish, yearRelease);
-                    oderRealTime.getListOrder().add(new OrderBook(newBook,quantity));
+                    BookManager bookManager = model.getMainSystem().getBookManager();
+                    Book key = bookManager.findBookByID(idBook);
+                    try {
+                        if (quantity > bookManager.findBooksByID(idBook).get(key)){
+                            JOptionPane.showMessageDialog(null,"Đã vượt quá số lượng trong kho","Nhắc nhở",JOptionPane.ERROR_MESSAGE);
+                        }else {
+                            Book newBook = new Book(idBook, title, price, type, author, publish, yearRelease);
+                            oderRealTime.getListOrder().add(new OrderBook(newBook,quantity));
+                            textIDB.setText("");
+                            textTitle.setText("");
+                            textType.setText("");
+                            textAuthor.setText("");
+                            textPulish.setText("");
+                            textYearPub.setText("");
+                            textQuantity.setText("");
+                            textPrice.setText("");
+                        }
+                        updateTable(model,Integer.parseInt(textIDOrder.getText().trim()));
+                        
+                        double totalPrice = model.getMainSystem().getOrderManager().calculateTotalPrice(Integer.parseInt(textIDOrder.getText().trim()));
+                        textTotalPrice.setText(totalPrice+"");
+                    }catch (NullPointerException exception){
+                        JOptionPane.showMessageDialog(null,"Vui lòng tạo hóa đơn trước khi thêm sách vào hóa đơn","Nhắc nhở",JOptionPane.ERROR_MESSAGE);
+                        
+                    }
                     
-                    textIDB.setText("");
-                    textTitle.setText("");
-                    textType.setText("");
-                    textAuthor.setText("");
-                    textPulish.setText("");
-                    textYearPub.setText("");
-                    textQuantity.setText("");
-                    textPrice.setText("");
-                    updateTable(model,Integer.parseInt(textIDOrder.getText().trim()));
-                    
-                    double totalPrice = model.getMainSystem().getOrderManager().calculateTotalPrice(Integer.parseInt(textIDOrder.getText().trim()));
-                    textTotalPrice.setText(totalPrice+"");
                 }
             });
             
@@ -280,7 +293,6 @@ public class OrderManagerPanel extends JPanel {
             
             JPanel statusButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             btnRemoveOrder = new JButton("Xóa");
-            btnChangeOrder = new JButton("Sửa");
             btnTotal = new JButton("Thanh Toán");
             
             btnRemoveOrder.addActionListener(e -> {
@@ -308,7 +320,6 @@ public class OrderManagerPanel extends JPanel {
             });
             
             statusButtonPanel.add(btnRemoveOrder);
-            statusButtonPanel.add(btnChangeOrder);
             statusButtonPanel.add(btnTotal);
             boundStatsPanel.add(statusButtonPanel,BorderLayout.SOUTH);
             

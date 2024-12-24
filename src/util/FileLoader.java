@@ -1,6 +1,6 @@
 package util;
 
-import model.*;
+import modelTMP.*;
 
 
 import java.io.BufferedReader;
@@ -35,7 +35,7 @@ public class FileLoader {
     
     public static Set<Customer> loadCustomer(){
         Customer customer = null;
-        Set<Customer> setCustomer = new HashSet<>();
+        Set<Customer> setCustomer = new TreeSet<>((o1, o2) -> o1.getIdCustomer().compareTo(o2.getIdCustomer()));
         String file = "src/data/customer_account.txt";
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -44,7 +44,7 @@ public class FileLoader {
             
             while ((line = br.readLine()) != null) {
                 String[] str = line.split("\\|");
-                customer = new Customer(str[1].trim(), str[2].trim(), str[3].trim(), str[4].trim(), str[5].trim(),Double.parseDouble(str[6].trim()));
+                customer = new Customer(str[1].trim(), str[2].trim(), AnalyzeDate.convertDayFomart(str[3].trim()), str[4].trim(), str[5].trim(),Double.parseDouble(str[6].trim()));
                 setCustomer.add(customer);
             }
             br.close();

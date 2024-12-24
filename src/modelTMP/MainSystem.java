@@ -1,4 +1,4 @@
-package model;
+package modelTMP;
 
 
 import util.FileLoader;
@@ -33,6 +33,18 @@ public class MainSystem {
     
     public BookManager getBookManager() {
         return bookManager;
+    }
+    
+    public void setBookManager(BookManager bookManager) {
+        this.bookManager = bookManager;
+    }
+    
+    public void setOrderManager(OrderManager orderManager) {
+        this.orderManager = orderManager;
+    }
+    
+    public void setCustomerManager(CustomerManager customerManager) {
+        this.customerManager = customerManager;
     }
     
     public void createBook(Book book, int quantity) {

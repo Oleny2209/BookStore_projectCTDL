@@ -2,8 +2,7 @@
 package view;
 
 
-import model.*;
-import util.*;
+import modelTMP.*;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -17,10 +16,10 @@ public class MainFrame extends JFrame {
     ActionListener actionMenu;
     IModel model = new Model(MainSystem.getInstance());
     
-    public MainFrame() throws IOException {
+    public MainFrame(){
         setTitle("Book Store Manager");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1080, 720);
+        setSize(1080, 750);
         setLocationRelativeTo(null);
         setResizable(false);
         

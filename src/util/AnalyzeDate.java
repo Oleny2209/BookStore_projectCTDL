@@ -19,4 +19,7 @@ public class AnalyzeDate {
         }
         return LocalDate.parse(input[2] + "-" + input[1] + "-" + input[0]);
     }
+    public static String dateToString(LocalDate date){
+        return date.getDayOfMonth() + "/" + date.getMonth().getValue() + "/" + date.getYear();
+    }
 }

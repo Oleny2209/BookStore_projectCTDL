@@ -1,4 +1,4 @@
-package model;
+package modelTMP;
 
 import java.util.Set;
 
@@ -18,6 +18,8 @@ public interface IModel {
     void updateListCustomer(Set<Customer> newData);
 
     void confirmUpdateCustomer(String otherId, String otherName, String otherPhone);
+    
+    void confirmUpdateCustomer(CustomerManager modelTMP);
 
     Customer findCustomer(String supposeId, String supposeName, String supposePhone);
     
