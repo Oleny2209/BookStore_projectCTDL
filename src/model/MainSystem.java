@@ -79,7 +79,7 @@ public class MainSystem {
         customerManager.confirmUpdateCustomer(otherId, otherName, otherPhone);
     }
     
-    public void removeBookInOrder(String idbook, int idOrder) {
-        orderManager.removeOrderBook(idbook,idOrder);
+    public void removeBookInOrder(String idBook, int idOrder) {
+        orderManager.removeOrderBook(idBook,idOrder);
     }
 }

@@ -53,10 +53,4 @@ public class FileLoader {
         }
         return setCustomer;
     }
-    
-    public static void main(String[] args) throws IOException {
-        FileLoader loader = new FileLoader();
-        System.out.println(loader.loadBook());
-        System.out.println(loader.loadCustomer());
-    }
 }

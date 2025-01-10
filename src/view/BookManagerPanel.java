@@ -139,47 +139,41 @@ public class BookManagerPanel extends JPanel {
             btnFind.setBackground(new Color(255, 250, 250));
             btnFind.setFocusable(false);
             btnFind.addActionListener(e -> {
-                if (e.getSource().equals(btnFind)) {
-                    
-                    
-                    BookManager category = new BookManager(model.getMainSystem().getBookManager());
-                    
-                    Map<Book, Integer> resultFind = new TreeMap<Book,Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
-                    if (!txFindIDBook.getText().trim().isEmpty()) {
-                        String idBook = txFindIDBook.getText().trim();
-                        resultFind.putAll(category.findBooksByID(idBook));
-                    } else {
-                        if (!txFindStartYearPub.getText().trim().isEmpty() && !txFindEndYearPub.getText().trim().isEmpty()) {
-                            resultFind = new TreeMap<Book,Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
-                            int start = Integer.parseInt(txFindStartYearPub.getText().trim());
-                            int end = Integer.parseInt(txFindEndYearPub.getText().trim());
-                            resultFind.putAll(category.findBookBetweenYear(start, end));
-                            category.setListBook(resultFind);
-                        }
-                        if (!txFindTitle.getText().trim().isEmpty()) {
-                            resultFind = new TreeMap<Book,Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
-                            String title = txFindTitle.getText().trim();
-                            resultFind.putAll(category.findBookByTitle(title));
-                            category.setListBook(resultFind);
-                        }
-                        if (!Objects.requireNonNull(comboFindType.getSelectedItem()).toString().isEmpty()) {
-                            resultFind = new TreeMap<Book,Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
-                            String typeBook = Objects.requireNonNull(comboFindType.getSelectedItem()).toString();
-                            resultFind.putAll(category.findBookByType(typeBook));
-                            category.setListBook(resultFind);
-                        }
-                        if (!txFindAuthor.getText().trim().isEmpty()) {
-                            resultFind = new TreeMap<Book,Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
-                            String author = txFindAuthor.getText().trim();
-                            resultFind.putAll(category.findBookByAuthor(author));
-                            category.setListBook(resultFind);
-                        }
-                        
+                BookManager category = new BookManager(model.getMainSystem().getBookManager());
+                
+                Map<Book, Integer> resultFind = new TreeMap<Book, Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
+                if (!txFindIDBook.getText().trim().isEmpty()) {
+                    String idBook = txFindIDBook.getText().trim();
+                    resultFind.putAll(category.findBooksByID(idBook));
+                } else {
+                    if (!txFindStartYearPub.getText().trim().isEmpty() && !txFindEndYearPub.getText().trim().isEmpty()) {
+                        resultFind = new TreeMap<Book, Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
+                        int start = Integer.parseInt(txFindStartYearPub.getText().trim());
+                        int end = Integer.parseInt(txFindEndYearPub.getText().trim());
+                        resultFind.putAll(category.findBookBetweenYear(start, end));
+                        category.setListBook(resultFind);
                     }
-                    updateTableFind(resultFind);
-                    
+                    if (!txFindTitle.getText().trim().isEmpty()) {
+                        resultFind = new TreeMap<Book, Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
+                        String title = txFindTitle.getText().trim();
+                        resultFind.putAll(category.findBookByTitle(title));
+                        category.setListBook(resultFind);
+                    }
+                    if (!Objects.requireNonNull(comboFindType.getSelectedItem()).toString().isEmpty()) {
+                        resultFind = new TreeMap<Book, Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
+                        String typeBook = Objects.requireNonNull(comboFindType.getSelectedItem()).toString();
+                        resultFind.putAll(category.findBookByType(typeBook));
+                        category.setListBook(resultFind);
+                    }
+                    if (!txFindAuthor.getText().trim().isEmpty()) {
+                        resultFind = new TreeMap<Book, Integer>((o1, o2) -> o1.getIdBook().compareTo(o2.getIdBook()));
+                        String author = txFindAuthor.getText().trim();
+                        resultFind.putAll(category.findBookByAuthor(author));
+                        category.setListBook(resultFind);
+                    }
                     
                 }
+                updateTableFind(resultFind);
             });
             buttonFindPanel.add(btnFind);
             
@@ -225,53 +219,48 @@ public class BookManagerPanel extends JPanel {
             add(boundPanel);
             
             btnAddStored.addActionListener(e -> {
-                if (e.getSource().equals(btnAddStored)) {
-                    System.out.println("Add");
-                    // check sach hop le hay khong
-                    try {
-                        String idBook = textIDBook.getText().trim();
-                        String title = textTitle.getText().trim();
-                        String type = Objects.requireNonNull(comboType.getSelectedItem()).toString();
-                        String author = textAuthor.getText().trim();
-                        String publish = textPulish.getText().trim();
-                        int yearRelease = Integer.parseInt(textYearPub.getText().trim());
-                        int quantity = Integer.parseInt(textQuantity.getText().trim());
-                        double price = Double.parseDouble(textPrice.getText().trim());
-                        Book newBook = new Book(idBook, title, price, type, author, publish, yearRelease);
-                        //goi phuong thuc tu Model.java
-                        //Tao phuong thuc tren IModel.java
-                        model.createBook(newBook, quantity);
-                        
-                        // Xóa trắng các trường nhập liệu sau khi thêm
-                        textIDBook.setText("");
-                        textTitle.setText("");
-                        comboType.setSelectedIndex(0);
-                        textAuthor.setText("");
-                        textPulish.setText("");
-                        textYearPub.setText("");
-                        textQuantity.setText("");
-                        textPrice.setText("");
-                        JOptionPane.showMessageDialog(null, "Thêm sách thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                    } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sách!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    }
-                    updateTable(model);
+                System.out.println("Add");
+                // check sach hop le hay khong
+                try {
+                    String idBook = textIDBook.getText().trim();
+                    String title = textTitle.getText().trim();
+                    String type = Objects.requireNonNull(comboType.getSelectedItem()).toString();
+                    String author = textAuthor.getText().trim();
+                    String publish = textPulish.getText().trim();
+                    int yearRelease = Integer.parseInt(textYearPub.getText().trim());
+                    int quantity = Integer.parseInt(textQuantity.getText().trim());
+                    double price = Double.parseDouble(textPrice.getText().trim());
+                    Book newBook = new Book(idBook, title, price, type, author, publish, yearRelease);
+                    //goi phuong thuc tu Model.java
+                    //Tao phuong thuc tren IModel.java
+                    model.createBook(newBook, quantity);
+                    
+                    // Xóa trắng các trường nhập liệu sau khi thêm
+                    textIDBook.setText("");
+                    textTitle.setText("");
+                    comboType.setSelectedIndex(0);
+                    textAuthor.setText("");
+                    textPulish.setText("");
+                    textYearPub.setText("");
+                    textQuantity.setText("");
+                    textPrice.setText("");
+                    JOptionPane.showMessageDialog(null, "Thêm sách thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin sách!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
+                updateTable(model);
             });
             btnRefreshStored.addActionListener(e -> updateTable(model));
             btnRemoveStored.addActionListener(e -> {
-                if (e.getSource().equals(btnRemoveStored)) {
+                try {
+                    int index = tableStored.getSelectedRow();
+                    JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
+                    String key = modelStored.getValueAt(index, 1).toString();
+                    model.removeBook(key);
                     
-                    try {
-                        int index = tableStored.getSelectedRow();
-                        JOptionPane.showConfirmDialog(null, "Bạn có muốn xóa?", "Cảnh báo", JOptionPane.YES_NO_OPTION);
-                        String key = modelStored.getValueAt(index, 1).toString();
-                        model.removeBook(key);
-                        
-                    } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null, "Hãy chọn hàng cần xóa",
-                                "Thông báo", JOptionPane.ERROR_MESSAGE);
-                    }
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(null, "Hãy chọn hàng cần xóa",
+                            "Thông báo", JOptionPane.ERROR_MESSAGE);
                 }
                 updateTable(model);
             });
