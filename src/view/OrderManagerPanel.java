@@ -80,7 +80,6 @@ public class OrderManagerPanel extends JPanel {
             buttonFindCustomer = new JButton("Tìm Khách Hàng");
             
             btnCreateOrder.addActionListener(e -> {
-                if (e.getSource().equals(btnCreateOrder)) {
                     try {
                         int idOrder = Integer.parseInt(textIDOrder.getText().trim());
                         String nameCus = textNameCus.getText().trim();
@@ -99,23 +98,18 @@ public class OrderManagerPanel extends JPanel {
                         JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin của hóa đơn",
                                 "Nhắc nhở", JOptionPane.ERROR_MESSAGE);
                     }
-                }
                 updateTable(model,Integer.parseInt(textIDOrder.getText().trim()));
             });
             btnSearchOrder.addActionListener(e -> {
-                if (e.getSource().equals(btnSearchOrder)){
                     updateTable(model,Integer.parseInt(textIDOrder.getText().trim()));
-                }
             });
             
             buttonFindCustomer.addActionListener(e ->{
-                if (e.getSource().equals(buttonFindCustomer)){
                     String nameCus = textNameCus.getText().trim();
                     String idCustomer = textIDCustomer.getText().trim();
                     Customer cus = model.findCustomer(idCustomer,"","");
                     textNameCus.setText(cus.getName());
                     textIDCustomer.setText(cus.getIdCustomer());
-                }
             });
             
             buttonPanel.add(btnCreateOrder);
@@ -180,7 +174,6 @@ public class OrderManagerPanel extends JPanel {
             buttonFind = new JButton("Tìm");
             
             buttonFind.addActionListener(e ->{
-                if (e.getSource().equals(buttonFind)){
                     Book book = model.getMainSystem().getBookManager().findBookByID(textIDB.getText().trim());
                     textTitle.setText(book.getTitle());
                     textType.setText(book.getType());
@@ -188,11 +181,9 @@ public class OrderManagerPanel extends JPanel {
                     textYearPub.setText(""+book.getYearRelease());
                     textPrice.setText(""+book.getPrice());
                     textPulish.setText(book.getPublish());
-                }
             });
             
             buttonAddBook.addActionListener(e -> {
-                if (e.getSource().equals(buttonAddBook)){
                     String idBook = textIDB.getText().trim();
                     String title = textTitle.getText().trim();
                     String type = textType.getText().trim();
@@ -227,8 +218,6 @@ public class OrderManagerPanel extends JPanel {
                         JOptionPane.showMessageDialog(null,"Vui lòng tạo hóa đơn trước khi thêm sách vào hóa đơn","Nhắc nhở",JOptionPane.ERROR_MESSAGE);
                         
                     }
-                    
-                }
             });
             
             boundButtonPanel.add(buttonAddBook);
@@ -298,9 +287,9 @@ public class OrderManagerPanel extends JPanel {
             btnRemoveOrder.addActionListener(e -> {
                 if (e.getSource().equals(btnRemoveOrder)){
                     int index = table.getSelectedRow();
-                    String idbook = modelOrder.getValueAt(index, 1).toString().trim();
+                    String idBook = modelOrder.getValueAt(index, 1).toString().trim();
                     int idOrder = Integer.parseInt(textIDOrder.getText().trim());
-                    model.removeBookInOrder(idbook,idOrder);
+                    model.removeBookInOrder(idBook,idOrder);
                 }
                 updateTable(model,Integer.parseInt(textIDOrder.getText().trim()));
                 double totalPrice = model.getMainSystem().getOrderManager().calculateTotalPrice(Integer.parseInt(textIDOrder.getText().trim()));

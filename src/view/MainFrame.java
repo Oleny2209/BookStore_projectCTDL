@@ -8,11 +8,11 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.IOException;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements IView{
     JMenuBar menuBar;
     JMenu menuFile, menuManager;
     JMenuItem mniExit, mniUpdate, mniBookManager, mniMainMenu;
-    JPanel mainPanel;
+    BookStoreManagerPanel mainPanel;
     ActionListener actionMenu;
     IModel model = new Model(MainSystem.getInstance());
     

@@ -75,23 +75,21 @@ public class CustomerManagerPanel extends JPanel {
         JPanel rightPanel = new JPanel(new GridLayout(2, 1, 10, 10)); // 2 hàng, 1 cột, khoảng cách 10px
         addBtn = new JButton("Thêm Khách Hàng");
         addBtn.addActionListener(e -> {
-            if (e.getSource().equals(addBtn)) {
-                String idCustomer = textLargeId.getText().trim();
-                String nameCustomer = textCustomerName.getText().trim();
-                LocalDate birthCustomer = AnalyzeDate.convertDayFomart(textBirthday.getText().trim());
-                String type = "Thường";
-                String phoneCustomer = textCustomerPhone.getText().trim();
-                double totalMoney = 0;
-                Customer cus = new Customer(idCustomer, nameCustomer, birthCustomer, type, phoneCustomer, totalMoney);
-                if (tmpModel == null) {
-                    tmpModel = new TreeSet<>((o1, o2) -> o1.getIdCustomer().compareTo(o2.getIdCustomer()));
-                    System.out.println("tmp model null");
-                }
-                Set<Customer> res = new HashSet<>(model.getMainSystem().getCustomerManager().getListCustomer());
-                tmpModel.addAll(res);
-                tmpModel.add(cus);
-                updateTMPTable(tmpModel);
+            String idCustomer = textLargeId.getText().trim();
+            String nameCustomer = textCustomerName.getText().trim();
+            LocalDate birthCustomer = AnalyzeDate.convertDayFomart(textBirthday.getText().trim());
+            String type = "Thường";
+            String phoneCustomer = textCustomerPhone.getText().trim();
+            double totalMoney = 0;
+            Customer cus = new Customer(idCustomer, nameCustomer, birthCustomer, type, phoneCustomer, totalMoney);
+            if (tmpModel == null) {
+                tmpModel = new TreeSet<>((o1, o2) -> o1.getIdCustomer().compareTo(o2.getIdCustomer()));
+                System.out.println("tmp model null");
             }
+            Set<Customer> res = new HashSet<>(model.getMainSystem().getCustomerManager().getListCustomer());
+            tmpModel.addAll(res);
+            tmpModel.add(cus);
+            updateTMPTable(tmpModel);
         });
         deleteBtn = new JButton("Xóa Khách Hàng");
         deleteBtn.addActionListener(new ActionListener() {

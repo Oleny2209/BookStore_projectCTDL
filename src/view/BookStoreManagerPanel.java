@@ -1,7 +1,10 @@
 
 package view;
 
+import model.BookManager;
+import model.CustomerManager;
 import model.IModel;
+import model.OrderManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +13,10 @@ import java.util.List;
 
 public class BookStoreManagerPanel extends JPanel {
     CardLayout card;
-    JPanel mainPanel, bookPanel, mainMenuPanel,orderPanel,customerPanel;
-    
+    JPanel mainPanel, mainMenuPanel;
+    BookManagerPanel bookPanel;
+    OrderManagerPanel orderPanel;
+    CustomerManagerPanel customerPanel;
     //them model vao constructor
     public BookStoreManagerPanel(IModel model){
         
